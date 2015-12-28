@@ -61,12 +61,17 @@ public class MainActivityFragment extends Fragment {
         call.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Response<MovieResponse> response, Retrofit retrofit) {
-                MovieResponse movieResponse = response.body();
-                List<Movie> movies = movieResponse.getMovies();
-                Log.v(LOG_TAG, "onResponse(): movies size = " + movies.size());
+                if (response.isSuccess()) {
+                    MovieResponse movieResponse = response.body();
+                    List<Movie> movies = movieResponse.getMovies();
+                    Log.v(LOG_TAG, "onResponse(): movies size = " + movies.size());
 
-                mMovies.addAll(movies);
-                mMovieAdapter.notifyDataSetChanged();
+                    mMovies.addAll(movies);
+                    mMovieAdapter.notifyDataSetChanged();
+                } else {
+                    int statusCode = response.code();
+                    Log.e(LOG_TAG, "onResponse(): Error code = " + statusCode);
+                }
             }
 
             @Override

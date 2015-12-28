@@ -84,22 +84,23 @@ public class MainActivityFragment extends Fragment {
         call.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Response<MovieResponse> response, Retrofit retrofit) {
-                MovieResponse movieResponse = response.body();
-                List<Movie> movies = movieResponse.getMovies();
-                Log.v(LOG_TAG, "onResponse(): movies size = " + movies.size());
+                if (response.isSuccess()) {
+                    MovieResponse movieResponse = response.body();
+                    List<Movie> movies = movieResponse.getMovies();
+                    Log.v(LOG_TAG, "onResponse(): movies size = " + movies.size());
 
-                mMovies.addAll(movies);
-                mMovieAdapter.notifyDataSetChanged();
-
-                mSwipeLayout.setRefreshing(false);
-                mProgressBar.setVisibility(View.GONE);
+                    mMovies.addAll(movies);
+                    mMovieAdapter.notifyDataSetChanged();
+                } else {
+                    int statusCode = response.code();
+                    Log.e(LOG_TAG, "onResponse(): Error code = " + statusCode);
+                }
+                stopRefreshAnimate();
             }
 
             @Override
             public void onFailure(Throwable t) {
-                mSwipeLayout.setRefreshing(false);
-                mProgressBar.setVisibility(View.GONE);
-
+                stopRefreshAnimate();
                 Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -121,5 +122,10 @@ public class MainActivityFragment extends Fragment {
                 Log.v(LOG_TAG, "onLoadMore(): mMovies updated, size = " + mMovies.size());
             }
         });
+    }
+
+    private void stopRefreshAnimate() {
+        mSwipeLayout.setRefreshing(false);
+        mProgressBar.setVisibility(View.GONE);
     }
 }

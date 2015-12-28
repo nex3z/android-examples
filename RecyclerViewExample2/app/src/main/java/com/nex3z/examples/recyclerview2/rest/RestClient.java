@@ -18,7 +18,7 @@ import retrofit.Retrofit;
 
 public class RestClient {
     private static final String BASE_URL = "http://api.themoviedb.org";
-    private MovieService movieService;
+    private MovieService mMovieService;
 
     public RestClient() {
         Gson gson = new GsonBuilder().create();
@@ -51,8 +51,8 @@ public class RestClient {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
-        movieService = retrofit.create(MovieService.class);
+        mMovieService = retrofit.create(MovieService.class);
     }
 
-    public MovieService getMovieService() { return movieService; }
+    public MovieService getMovieService() { return mMovieService; }
 }

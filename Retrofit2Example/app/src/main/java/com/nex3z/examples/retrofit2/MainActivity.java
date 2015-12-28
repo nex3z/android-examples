@@ -41,21 +41,18 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Response<MovieResponse> response, Retrofit retrofit) {
-                MovieResponse movieResponse = response.body();
-                mMovies = movieResponse.getMovies();
-                Log.v(LOG_TAG, "onResponse(): mMovies size = " + mMovies.size());
+                if (response.isSuccess()) {
+                    MovieResponse movieResponse = response.body();
+                    mMovies = movieResponse.getMovies();
+                    Log.v(LOG_TAG, "onResponse(): mMovies size = " + mMovies.size());
 
-                List<String> listContent = new ArrayList<>();
-                for (Movie movie : mMovies) {
-                    listContent.add(movie.toString());
+                    updateListView();
+                } else {
+                    int statusCode = response.code();
+                    Toast.makeText(MainActivity.this,
+                            "Error code: " + statusCode, Toast.LENGTH_SHORT).show();
                 }
 
-                mMovieAdapter = new ArrayAdapter<>(
-                        MainActivity.this,
-                        R.layout.list_item,
-                        R.id.list_item_textview,
-                        listContent);
-                mListView.setAdapter(mMovieAdapter);
             }
 
             @Override
@@ -65,5 +62,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void updateListView() {
+        List<String> listContent = new ArrayList<>();
+        for (Movie movie : mMovies) {
+            listContent.add(movie.toString());
+        }
 
+        mMovieAdapter = new ArrayAdapter<>(
+                MainActivity.this,
+                R.layout.list_item,
+                R.id.list_item_textview,
+                listContent);
+        mListView.setAdapter(mMovieAdapter);
+    }
 }
