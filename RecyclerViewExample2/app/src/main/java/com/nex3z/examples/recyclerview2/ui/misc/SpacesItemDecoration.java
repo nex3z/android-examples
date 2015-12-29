@@ -1,4 +1,4 @@
-package com.nex3z.examples.recyclerview2.ui;
+package com.nex3z.examples.recyclerview2.ui.misc;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;

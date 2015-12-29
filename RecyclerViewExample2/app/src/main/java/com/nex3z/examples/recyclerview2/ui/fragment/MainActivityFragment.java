@@ -19,8 +19,8 @@ import com.nex3z.examples.recyclerview2.app.App;
 import com.nex3z.examples.recyclerview2.model.Movie;
 import com.nex3z.examples.recyclerview2.rest.model.MovieResponse;
 import com.nex3z.examples.recyclerview2.rest.service.MovieService;
-import com.nex3z.examples.recyclerview2.ui.EndlessRecyclerOnScrollListener;
-import com.nex3z.examples.recyclerview2.ui.SpacesItemDecoration;
+import com.nex3z.examples.recyclerview2.ui.misc.EndlessRecyclerOnScrollListener;
+import com.nex3z.examples.recyclerview2.ui.misc.SpacesItemDecoration;
 import com.nex3z.examples.recyclerview2.ui.adapter.MovieAdapter;
 
 import java.util.ArrayList;
