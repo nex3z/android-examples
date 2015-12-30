@@ -1,0 +1,3 @@
+<resources>
+    <item type="layout" name="movie_grid">@layout/movie_grid_twopanes</item>
+</resources>
