@@ -66,8 +66,10 @@ public class MainActivityFragment extends Fragment {
                     List<Movie> movies = movieResponse.getMovies();
                     Log.v(LOG_TAG, "onResponse(): movies size = " + movies.size());
 
+                    mMovies.clear();
                     mMovies.addAll(movies);
-                    mMovieAdapter.notifyDataSetChanged();
+
+                    mMovieAdapter.notifyItemInserted(0);
                 } else {
                     int statusCode = response.code();
                     Log.e(LOG_TAG, "onResponse(): Error code = " + statusCode);
