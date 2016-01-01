@@ -10,9 +10,9 @@ public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScr
 
     private final int VISIBLE_THRESHOLD = 10;
 
-    private int previousTotal = 0;
-    private boolean loading = true;
-    private int currentPage = 1;
+    private int mPreviousTotal = 0;
+    private boolean mLoading = true;
+    private int mCurrentPage = 1;
     private LinearLayoutManager mLinearLayoutManager;
 
     public EndlessRecyclerOnScrollListener(LinearLayoutManager linearLayoutManager) {
@@ -27,20 +27,25 @@ public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScr
         int totalItemCount = mLinearLayoutManager.getItemCount();
         int firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition();
 
-        if (loading) {
-            if (totalItemCount > previousTotal) {
-                loading = false;
-                previousTotal = totalItemCount;
+        if (mLoading) {
+            if (totalItemCount > mPreviousTotal) {
+                mLoading = false;
+                mPreviousTotal = totalItemCount;
             }
         }
-        if (!loading && (totalItemCount - visibleItemCount)
-                <= (firstVisibleItem + VISIBLE_THRESHOLD)) {
+        if (!mLoading && (totalItemCount - firstVisibleItem - visibleItemCount)
+                <= VISIBLE_THRESHOLD) {
 
-            currentPage++;
-            onLoadMore(currentPage);
+            onLoadMore(++mCurrentPage);
 
-            loading = true;
+            mLoading = true;
         }
+    }
+
+    public void reset() {
+        mCurrentPage = 1;
+        mPreviousTotal = 0;
+        mLoading = true;
     }
 
     public abstract void onLoadMore(int currentPage);

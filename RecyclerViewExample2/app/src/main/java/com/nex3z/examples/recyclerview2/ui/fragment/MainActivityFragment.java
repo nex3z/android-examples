@@ -41,7 +41,7 @@ public class MainActivityFragment extends Fragment {
 
     private MovieAdapter mMovieAdapter;
     private List<Movie> mMovies = new ArrayList<>();
-    private int mPage = FIRST_PAGE;
+    private EndlessRecyclerOnScrollListener mOnScrollListener;
 
     public MainActivityFragment() { }
 
@@ -64,6 +64,9 @@ public class MainActivityFragment extends Fragment {
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                if (mOnScrollListener != null) {
+                    mOnScrollListener.reset();
+                }
                 fetchMovies();
             }
         });
@@ -77,6 +80,7 @@ public class MainActivityFragment extends Fragment {
     }
 
     private void fetchMovies(int page) {
+        Log.v(LOG_TAG, "fetchMovies(): page = " + page);
         MovieService movieService = App.getRestClient().getMovieService();
         Call<MovieResponse> call =
                 movieService.getMovies(MovieService.SORT_BY_POPULARITY_DESC, page);
@@ -115,13 +119,15 @@ public class MainActivityFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener(layoutManager) {
+        mOnScrollListener = new EndlessRecyclerOnScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int current_page) {
-                fetchMovies(++mPage);
-                Log.v(LOG_TAG, "onLoadMore(): mMovies updated, size = " + mMovies.size());
+                fetchMovies(current_page);
+                Log.v(LOG_TAG, "onLoadMore(): current_page = " + current_page
+                        + ", mMovies.size() = " + mMovies.size());
             }
-        });
+        };
+        recyclerView.addOnScrollListener(mOnScrollListener);
     }
 
     private void stopRefreshAnimate() {
