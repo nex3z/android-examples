@@ -36,6 +36,7 @@ import retrofit.Retrofit;
 public class MovieGridFragment extends Fragment {
     private static final String LOG_TAG = MovieGridFragment.class.getSimpleName();
     private static final int FIRST_PAGE = 1;
+    private static final String SELECTED_KEY = "SELECTED_POSITION";
 
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeLayout;
@@ -45,6 +46,7 @@ public class MovieGridFragment extends Fragment {
     private List<Movie> mMovies = new ArrayList<>();
     private int mPage = FIRST_PAGE;
     private Callbacks mCallbacks = sDummyCallbacks;
+    private int mPosition = RecyclerView.NO_POSITION;
 
     public interface Callbacks {
         void onItemSelected(Movie movie, MovieAdapter.ViewHolder vh);
@@ -73,6 +75,10 @@ public class MovieGridFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         setupRecyclerView(mRecyclerView);
 
+        if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)) {
+            mPosition = savedInstanceState.getInt(SELECTED_KEY);
+        }
+
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -99,6 +105,15 @@ public class MovieGridFragment extends Fragment {
         mCallbacks = sDummyCallbacks;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (mPosition != RecyclerView.NO_POSITION) {
+            outState.putInt(SELECTED_KEY, mPosition);
+        }
+
+        super.onSaveInstanceState(outState);
+    }
+
     private void fetchMovies() {
         mMovies.clear();
         fetchMovies(FIRST_PAGE);
@@ -119,15 +134,16 @@ public class MovieGridFragment extends Fragment {
                 mMovies.addAll(movies);
                 mMovieAdapter.notifyDataSetChanged();
 
-                mSwipeLayout.setRefreshing(false);
-                mProgressBar.setVisibility(View.GONE);
+                stopRefreshAnimate();
+                if (mPosition != RecyclerView.NO_POSITION) {
+                    Log.v(LOG_TAG, "fetchMovies(): smoothScrollToPosition: " + mPosition);
+                    mRecyclerView.smoothScrollToPosition(mPosition);
+                }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                mSwipeLayout.setRefreshing(false);
-                mProgressBar.setVisibility(View.GONE);
-
+                stopRefreshAnimate();
                 Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -143,6 +159,7 @@ public class MovieGridFragment extends Fragment {
                 if (movie != null) {
                     mCallbacks.onItemSelected(movie, vh);
                 }
+                mPosition = position;
             }
         });
         mRecyclerView.setAdapter(mMovieAdapter);
@@ -161,4 +178,8 @@ public class MovieGridFragment extends Fragment {
         });
     }
 
+    private void stopRefreshAnimate() {
+        mSwipeLayout.setRefreshing(false);
+        mProgressBar.setVisibility(View.GONE);
+    }
 }
