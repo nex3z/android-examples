@@ -162,7 +162,7 @@ public class MovieGridFragment extends Fragment {
                 mPosition = position;
             }
         });
-        mRecyclerView.setAdapter(mMovieAdapter);
+        recyclerView.setAdapter(mMovieAdapter);
 
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.addItemDecoration(new SpacesItemDecoration(4, 4, 4, 4));

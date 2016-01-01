@@ -83,7 +83,7 @@ public class MainActivityFragment extends Fragment {
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         mMovieAdapter = new MovieAdapter(mMovies);
-        mRecyclerView.setAdapter(mMovieAdapter);
+        recyclerView.setAdapter(mMovieAdapter);
 
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
