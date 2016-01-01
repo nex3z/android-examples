@@ -1,4 +1,4 @@
-# Master Detail Example
+# RecyclerView Example 2
 
 ## Description
 

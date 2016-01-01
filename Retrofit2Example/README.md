@@ -1,4 +1,4 @@
-# Master Detail Example
+# Retrofit Example
 
 ## Description
 
