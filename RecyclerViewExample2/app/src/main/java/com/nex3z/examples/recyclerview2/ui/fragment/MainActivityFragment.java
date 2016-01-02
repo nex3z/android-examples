@@ -26,6 +26,7 @@ import com.nex3z.examples.recyclerview2.ui.misc.SpacesItemDecoration;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
@@ -123,7 +124,10 @@ public class MainActivityFragment extends Fragment {
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         mMovieAdapter = new MovieAdapter(mMovies);
-        recyclerView.setAdapter(mMovieAdapter);
+        SlideInBottomAnimationAdapter animationAdapter =
+                new SlideInBottomAnimationAdapter(mMovieAdapter);
+        animationAdapter.setDuration(500);
+        recyclerView.setAdapter(animationAdapter);
 
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.addItemDecoration(new SpacesItemDecoration(4, 4, 4, 4));

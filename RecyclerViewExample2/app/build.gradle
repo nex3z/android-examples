@@ -39,4 +39,5 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.7.0'
     compile 'com.squareup.okhttp:logging-interceptor:2.7.0'
     compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
+    compile 'jp.wasabeef:recyclerview-animators:2.1.0'
 }
