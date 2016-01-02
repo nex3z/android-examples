@@ -19,9 +19,9 @@ import com.nex3z.examples.recyclerview2.app.App;
 import com.nex3z.examples.recyclerview2.model.Movie;
 import com.nex3z.examples.recyclerview2.rest.model.MovieResponse;
 import com.nex3z.examples.recyclerview2.rest.service.MovieService;
+import com.nex3z.examples.recyclerview2.ui.adapter.MovieAdapter;
 import com.nex3z.examples.recyclerview2.ui.misc.EndlessRecyclerOnScrollListener;
 import com.nex3z.examples.recyclerview2.ui.misc.SpacesItemDecoration;
-import com.nex3z.examples.recyclerview2.ui.adapter.MovieAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +42,7 @@ public class MainActivityFragment extends Fragment {
     private MovieAdapter mMovieAdapter;
     private List<Movie> mMovies = new ArrayList<>();
     private EndlessRecyclerOnScrollListener mOnScrollListener;
+    private Call<MovieResponse> mCall;
 
     public MainActivityFragment() { }
 
@@ -67,6 +68,9 @@ public class MainActivityFragment extends Fragment {
                 if (mOnScrollListener != null) {
                     mOnScrollListener.reset();
                 }
+                if (mCall != null) {
+                    mCall.cancel();
+                }
                 fetchMovies();
             }
         });
@@ -76,16 +80,18 @@ public class MainActivityFragment extends Fragment {
 
     private void fetchMovies() {
         mMovies.clear();
+        if (mMovieAdapter != null) {
+            mMovieAdapter.notifyDataSetChanged();
+        }
         fetchMovies(FIRST_PAGE);
     }
 
     private void fetchMovies(int page) {
         Log.v(LOG_TAG, "fetchMovies(): page = " + page);
         MovieService movieService = App.getRestClient().getMovieService();
-        Call<MovieResponse> call =
-                movieService.getMovies(MovieService.SORT_BY_POPULARITY_DESC, page);
+        mCall = movieService.getMovies(MovieService.SORT_BY_POPULARITY_DESC, page);
 
-        call.enqueue(new Callback<MovieResponse>() {
+        mCall.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Response<MovieResponse> response, Retrofit retrofit) {
                 if (response.isSuccess()) {
@@ -94,7 +100,12 @@ public class MainActivityFragment extends Fragment {
                     Log.v(LOG_TAG, "onResponse(): movies size = " + movies.size());
 
                     mMovies.addAll(movies);
-                    mMovieAdapter.notifyDataSetChanged();
+
+                    int insertSize = movies.size();
+                    int insertPos = mMovies.size() - insertSize;
+                    Log.v(LOG_TAG, "onResponse(): insertPos = " + insertPos
+                            + ", insertSize = " + insertSize);
+                    mMovieAdapter.notifyItemRangeInserted(insertPos, insertSize);
                 } else {
                     int statusCode = response.code();
                     Log.e(LOG_TAG, "onResponse(): Error code = " + statusCode);
