@@ -44,6 +44,8 @@ public class MovieGridFragment extends Fragment {
 
     private MovieAdapter mMovieAdapter;
     private List<Movie> mMovies = new ArrayList<>();
+    private EndlessRecyclerOnScrollListener mOnScrollListener;
+    private Call<MovieResponse> mCall;
     private int mPage = FIRST_PAGE;
     private Callbacks mCallbacks = sDummyCallbacks;
     private int mPosition = RecyclerView.NO_POSITION;
@@ -82,6 +84,12 @@ public class MovieGridFragment extends Fragment {
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                if (mOnScrollListener != null) {
+                    mOnScrollListener.reset();
+                }
+                if (mCall != null) {
+                    mCall.cancel();
+                }
                 fetchMovies();
             }
         });
@@ -116,15 +124,19 @@ public class MovieGridFragment extends Fragment {
 
     private void fetchMovies() {
         mMovies.clear();
+        if (mMovieAdapter != null) {
+            mMovieAdapter.notifyDataSetChanged();
+        }
         fetchMovies(FIRST_PAGE);
     }
 
     private void fetchMovies(int page) {
-        MovieService movieService = App.getRestClient().getMovieService();
-        Call<MovieResponse> call =
-                movieService.getMovies(MovieService.SORT_BY_POPULARITY_DESC, page);
+        Log.v(LOG_TAG, "fetchMovies(): page = " + page);
 
-        call.enqueue(new Callback<MovieResponse>() {
+        MovieService movieService = App.getRestClient().getMovieService();
+        mCall = movieService.getMovies(MovieService.SORT_BY_POPULARITY_DESC, page);
+
+        mCall.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Response<MovieResponse> response, Retrofit retrofit) {
                 if (response.isSuccess()) {
@@ -133,12 +145,14 @@ public class MovieGridFragment extends Fragment {
                     Log.v(LOG_TAG, "onResponse(): movies size = " + movies.size());
 
                     mMovies.addAll(movies);
-                    mMovieAdapter.notifyDataSetChanged();
 
-                    if (mPosition != RecyclerView.NO_POSITION) {
-                        Log.v(LOG_TAG, "fetchMovies(): smoothScrollToPosition: " + mPosition);
-                        mRecyclerView.smoothScrollToPosition(mPosition);
-                    }
+                    int insertSize = movies.size();
+                    int insertPos = mMovies.size() - insertSize;
+                    Log.v(LOG_TAG, "onResponse(): insertPos = " + insertPos
+                            + ", insertSize = " + insertSize);
+
+                    mMovieAdapter.notifyItemRangeInserted(insertPos, insertSize);
+
                 }else {
                     int statusCode = response.code();
                     Log.e(LOG_TAG, "onResponse(): Error code = " + statusCode);
@@ -174,13 +188,15 @@ public class MovieGridFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener(layoutManager) {
+        mOnScrollListener = new EndlessRecyclerOnScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int current_page) {
-                fetchMovies(++mPage);
+                fetchMovies(current_page);
                 Log.v(LOG_TAG, "onLoadMore(): mMovies updated, size = " + mMovies.size());
             }
-        });
+        };
+
+        recyclerView.addOnScrollListener(mOnScrollListener);
     }
 
     private void stopRefreshAnimate() {

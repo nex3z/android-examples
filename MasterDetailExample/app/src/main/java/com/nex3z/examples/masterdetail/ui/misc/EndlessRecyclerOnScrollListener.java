@@ -33,14 +33,19 @@ public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScr
                 mPreviousTotal = totalItemCount;
             }
         }
-        if (!mLoading &&
-                (totalItemCount - visibleItemCount) <= (firstVisibleItem + VISIBLE_THRESHOLD)) {
+        if (!mLoading && (totalItemCount - firstVisibleItem - visibleItemCount)
+                <= VISIBLE_THRESHOLD) {
 
-            mCurrentPage++;
-            onLoadMore(mCurrentPage);
+            onLoadMore(++mCurrentPage);
 
             mLoading = true;
         }
+    }
+
+    public void reset() {
+        mCurrentPage = 1;
+        mPreviousTotal = 0;
+        mLoading = true;
     }
 
     public abstract void onLoadMore(int currentPage);
