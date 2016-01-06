@@ -1,4 +1,4 @@
-# Master Detail Example
+# ContentProvider Example
 
 ## Description
 
