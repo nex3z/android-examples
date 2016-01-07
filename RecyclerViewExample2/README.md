@@ -7,6 +7,7 @@ An example of RecyclerView. Includes:
 - SwipeRefreshLayout for refresh gesture.
 - A custom OnScrollListener class for endless Scrolling.
 - A custom ItemDecoration class for item spacing. 
+- Use recyclerview-animators(https://github.com/wasabeef/recyclerview-animators) for custom animations.
 
 ## About API key
 
