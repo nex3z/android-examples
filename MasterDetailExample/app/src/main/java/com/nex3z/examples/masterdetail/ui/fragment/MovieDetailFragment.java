@@ -52,7 +52,7 @@ public class MovieDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.movie_detail, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_movie_detail, container, false);
 
         mPoster = (ImageView) rootView.findViewById(R.id.detail_poster);
         mTitle = (TextView) rootView.findViewById(R.id.detail_title);
