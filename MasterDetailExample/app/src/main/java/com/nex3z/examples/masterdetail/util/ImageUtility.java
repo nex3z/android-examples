@@ -19,4 +19,8 @@ public class ImageUtility {
     public static String getImageUrl(String path) {
         return getImageUrl(path, POSTER_SIZE_W342);
     }
+
+    public static String getBackdropImageUrl(String path) {
+        return getImageUrl(path, POSTER_SIZE_W500);
+    }
 }

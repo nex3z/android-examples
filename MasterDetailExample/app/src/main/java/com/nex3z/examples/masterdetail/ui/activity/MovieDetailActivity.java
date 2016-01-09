@@ -64,7 +64,17 @@ public class MovieDetailActivity extends AppCompatActivity {
         appBarLayout.setTitle(mMovie.getTitle());
 
         ImageView backdrop = (ImageView) findViewById(R.id.detail_backdrop);
-        String url = ImageUtility.getImageUrl(mMovie.getBackdropPath());
-        Picasso.with(this).load(url).into(backdrop);
+        String url = ImageUtility.getBackdropImageUrl(mMovie.getBackdropPath());
+        Picasso.with(this).load(url).into(backdrop, new com.squareup.picasso.Callback() {
+            @Override
+            public void onError() {
+                supportStartPostponedEnterTransition();
+            }
+
+            @Override
+            public void onSuccess() {
+                supportStartPostponedEnterTransition();
+            }
+        });
     }
 }
