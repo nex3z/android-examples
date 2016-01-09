@@ -35,6 +35,8 @@ public class MovieGridActivity extends AppCompatActivity implements MovieGridFra
 
         if (findViewById(R.id.movie_detail_container) != null) {
             mTwoPane = true;
+        } else {
+            mTwoPane = false;
         }
         Log.v(LOG_TAG, "onCreate(): mTwoPane = " + mTwoPane);
     }
