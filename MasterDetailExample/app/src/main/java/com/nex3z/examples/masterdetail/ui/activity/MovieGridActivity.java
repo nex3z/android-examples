@@ -75,7 +75,6 @@ public class MovieGridActivity extends AppCompatActivity implements MovieGridFra
                                     getString(R.string.detail_poster_transition_name)));
 
             ActivityCompat.startActivity(this, intent, activityOptions.toBundle());
-            // startActivity(intent);
         }
     }
 }

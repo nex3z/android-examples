@@ -1,9 +1,7 @@
 package com.nex3z.examples.masterdetail.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -45,6 +43,8 @@ public class MovieDetailActivity extends AppCompatActivity {
                     .add(R.id.movie_detail_container, fragment)
                     .commit();
 
+            supportPostponeEnterTransition();
+
             updateTitle();
         }
     }
@@ -53,10 +53,6 @@ public class MovieDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            Intent upIntent = NavUtils.getParentActivityIntent(this);
-            //NavUtils.navigateUpTo(this, upIntent);
-            // NavUtils.navigateUpTo(this, new Intent(this, MovieGridActivity.class));
-            // NavUtils.navigateUpFromSameTask(this);
             supportFinishAfterTransition();
             return true;
         }

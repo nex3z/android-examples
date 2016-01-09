@@ -70,5 +70,7 @@ public class MovieDetailFragment extends Fragment {
         mTitle.setText(mMovie.getTitle());
         mReleaseDate.setText(mMovie.getReleaseDate());
         mOverview.setText(mMovie.getOverview());
+
+        getActivity().supportStartPostponedEnterTransition();
     }
 }
