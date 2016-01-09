@@ -2,11 +2,15 @@ package com.nex3z.examples.masterdetail.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.nex3z.examples.masterdetail.R;
 import com.nex3z.examples.masterdetail.model.Movie;
@@ -64,7 +68,14 @@ public class MovieGridActivity extends AppCompatActivity implements MovieGridFra
         } else {
             Intent intent = new Intent(this, MovieDetailActivity.class)
                     .putExtra(MovieDetailActivity.MOVIE_INFO, movie);
-            startActivity(intent);
+
+            ActivityOptionsCompat activityOptions = ActivityOptionsCompat
+                    .makeSceneTransitionAnimation(this, new Pair<View, String>(
+                                    vh.mPoster,
+                                    getString(R.string.detail_poster_transition_name)));
+
+            ActivityCompat.startActivity(this, intent, activityOptions.toBundle());
+            // startActivity(intent);
         }
     }
 }

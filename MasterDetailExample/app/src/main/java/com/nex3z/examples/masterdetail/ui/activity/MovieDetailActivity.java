@@ -55,8 +55,9 @@ public class MovieDetailActivity extends AppCompatActivity {
         if (id == android.R.id.home) {
             Intent upIntent = NavUtils.getParentActivityIntent(this);
             //NavUtils.navigateUpTo(this, upIntent);
-            NavUtils.navigateUpTo(this, new Intent(this, MovieGridActivity.class));
+            // NavUtils.navigateUpTo(this, new Intent(this, MovieGridActivity.class));
             // NavUtils.navigateUpFromSameTask(this);
+            supportFinishAfterTransition();
             return true;
         }
         return super.onOptionsItemSelected(item);
