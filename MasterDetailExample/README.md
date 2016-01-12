@@ -2,7 +2,7 @@
 
 ## Description
 
-An example of master/detail navigation flow.
+An example of master/detail navigation flow and activity transitions.
 
 ## About API key
 
