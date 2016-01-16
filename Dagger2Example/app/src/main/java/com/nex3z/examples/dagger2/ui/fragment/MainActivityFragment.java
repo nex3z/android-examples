@@ -28,6 +28,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import retrofit.Call;
 import retrofit.Callback;
@@ -38,14 +40,14 @@ public class MainActivityFragment extends Fragment {
     private static final String LOG_TAG = MainActivityFragment.class.getSimpleName();
     private static final int FIRST_PAGE = 1;
 
-    private RecyclerView mRecyclerView;
-    private SwipeRefreshLayout mSwipeLayout;
-    private ProgressBar mProgressBar;
-
     private MovieAdapter mMovieAdapter;
     private List<Movie> mMovies = new ArrayList<>();
     private EndlessRecyclerOnScrollListener mOnScrollListener;
     private Call<MovieResponse> mCall;
+
+    @Bind(R.id.movie_grid) RecyclerView mRecyclerView;
+    @Bind(R.id.swipe_container) SwipeRefreshLayout mSwipeLayout;
+    @Bind(R.id.progressbar) ProgressBar mProgressBar;
 
     @Inject MovieService mMovieService;
 
@@ -56,9 +58,8 @@ public class MainActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.movie_grid);
-        mSwipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
-        mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressbar);
+        ButterKnife.bind(this, rootView);
+
         ((App)getActivity().getApplication()).getRestComponent().inject(this);
 
         return rootView;
