@@ -1,9 +1,13 @@
-package com.nex3z.examples.dagger2.rest;
+package com.nex3z.examples.dagger2.internal.module;
+
+import android.app.Application;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nex3z.examples.dagger2.BuildConfig;
+import com.nex3z.examples.dagger2.internal.PerActivity;
 import com.nex3z.examples.dagger2.rest.service.MovieService;
+import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
@@ -12,8 +16,6 @@ import com.squareup.okhttp.Response;
 import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
 import java.io.IOException;
-
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -28,14 +30,22 @@ public class RestModule {
         mBaseUrl = baseUrl;
     }
 
-    @Provides @Singleton
+    @Provides @PerActivity
     Gson provideGson() {
         Gson gson = new GsonBuilder().create();
         return gson;
     }
 
-    @Provides @Singleton
-    OkHttpClient provideOkHttpClient() {
+    @Provides
+    @PerActivity
+    Cache provideOkHttpCache(Application application) {
+        int cacheSize = 10 * 1024 * 1024;
+        Cache cache = new Cache(application.getCacheDir(), cacheSize);
+        return cache;
+    }
+
+    @Provides @PerActivity
+    OkHttpClient provideOkHttpClient(Cache cache) {
         OkHttpClient httpClient = new OkHttpClient();
 
         httpClient.interceptors().add(
@@ -59,10 +69,12 @@ public class RestModule {
             }
         });
 
+        httpClient.setCache(cache);
+
         return httpClient;
     }
 
-    @Provides @Singleton
+    @Provides @PerActivity
     Retrofit provideRetrofit(Gson gson, OkHttpClient okHttpClient) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(mBaseUrl)
@@ -73,7 +85,7 @@ public class RestModule {
         return retrofit;
     }
 
-    @Provides @Singleton
+    @Provides @PerActivity
     MovieService provideMovieService(Retrofit retrofit) {
         MovieService movieService = retrofit.create(MovieService.class);
         return movieService;

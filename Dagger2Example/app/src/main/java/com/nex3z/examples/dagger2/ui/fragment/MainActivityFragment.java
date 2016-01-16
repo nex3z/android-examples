@@ -15,7 +15,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.nex3z.examples.dagger2.R;
-import com.nex3z.examples.dagger2.app.App;
+import com.nex3z.examples.dagger2.internal.HasComponent;
+import com.nex3z.examples.dagger2.internal.component.RestComponent;
 import com.nex3z.examples.dagger2.model.Movie;
 import com.nex3z.examples.dagger2.rest.model.MovieResponse;
 import com.nex3z.examples.dagger2.rest.service.MovieService;
@@ -60,13 +61,21 @@ public class MainActivityFragment extends Fragment {
 
         ButterKnife.bind(this, rootView);
 
-        ((App)getActivity().getApplication()).getRestComponent().inject(this);
-
         return rootView;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    @SuppressWarnings("unchecked")
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        ((HasComponent<RestComponent>)getActivity()).getComponent().inject(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
         setupRecyclerView(mRecyclerView);
 
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

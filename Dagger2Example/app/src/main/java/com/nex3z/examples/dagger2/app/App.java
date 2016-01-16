@@ -2,24 +2,24 @@ package com.nex3z.examples.dagger2.app;
 
 import android.app.Application;
 
-import com.nex3z.examples.dagger2.rest.DaggerRestComponent;
-import com.nex3z.examples.dagger2.rest.RestComponent;
-import com.nex3z.examples.dagger2.rest.RestModule;
+import com.nex3z.examples.dagger2.internal.component.*;
+import com.nex3z.examples.dagger2.internal.module.AppModule;
 
 public class App extends Application {
     private static final String BASE_URL = "http://api.themoviedb.org";
-    private RestComponent mRestComponent;
+
+    private AppComponent mAppComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        mRestComponent = DaggerRestComponent.builder()
-                .restModule(new RestModule(BASE_URL))
+        mAppComponent = DaggerAppComponent.builder()
+                .appModule(new AppModule(this))
                 .build();
     }
 
-    public RestComponent getRestComponent() {
-        return mRestComponent;
+    public AppComponent getAppComponent() {
+        return mAppComponent;
     }
 }
