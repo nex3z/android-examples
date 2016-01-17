@@ -14,10 +14,10 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.nex3z.examples.dagger2.R;
-import com.nex3z.examples.dagger2.internal.component.RestComponent;
+import com.nex3z.examples.dagger2.internal.component.MainComponent;
 import com.nex3z.examples.dagger2.model.Movie;
-import com.nex3z.examples.dagger2.rest.model.MovieResponse;
-import com.nex3z.examples.dagger2.rest.service.MovieService;
+import com.nex3z.examples.dagger2.presenter.MainPresenter;
+import com.nex3z.examples.dagger2.ui.MovieGridView;
 import com.nex3z.examples.dagger2.ui.adapter.MovieAdapter;
 import com.nex3z.examples.dagger2.ui.misc.EndlessRecyclerOnScrollListener;
 import com.nex3z.examples.dagger2.ui.misc.SpacesItemDecoration;
@@ -30,25 +30,20 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
 
-public class MainActivityFragment extends BaseFragment {
+public class MainActivityFragment extends BaseFragment implements MovieGridView {
     private static final String LOG_TAG = MainActivityFragment.class.getSimpleName();
     private static final int FIRST_PAGE = 1;
 
     private MovieAdapter mMovieAdapter;
     private List<Movie> mMovies = new ArrayList<>();
     private EndlessRecyclerOnScrollListener mOnScrollListener;
-    private Call<MovieResponse> mCall;
 
     @Bind(R.id.movie_grid) RecyclerView mRecyclerView;
     @Bind(R.id.swipe_container) SwipeRefreshLayout mSwipeLayout;
     @Bind(R.id.progressbar) ProgressBar mProgressBar;
 
-    @Inject MovieService mMovieService;
+    @Inject MainPresenter mMainPresenter;
 
     public MainActivityFragment() { }
 
@@ -66,7 +61,7 @@ public class MainActivityFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getComponent(RestComponent.class).inject(this);
+        getComponent(MainComponent.class).inject(this);
     }
 
     @Override
@@ -81,14 +76,11 @@ public class MainActivityFragment extends BaseFragment {
                 if (mOnScrollListener != null) {
                     mOnScrollListener.reset();
                 }
-                if (mCall != null) {
-                    mCall.cancel();
-                }
-                fetchMovies();
+                fetchInitialMovies();
             }
         });
 
-        fetchMovies();
+        fetchInitialMovies();
     }
 
     @Override
@@ -97,45 +89,12 @@ public class MainActivityFragment extends BaseFragment {
         ButterKnife.unbind(this);
     }
 
-    private void fetchMovies() {
+    private void fetchInitialMovies() {
         mMovies.clear();
         if (mMovieAdapter != null) {
             mMovieAdapter.notifyDataSetChanged();
         }
-        fetchMovies(FIRST_PAGE);
-    }
-
-    private void fetchMovies(int page) {
-        Log.v(LOG_TAG, "fetchMovies(): page = " + page);
-        mCall = mMovieService.getMovies(MovieService.SORT_BY_POPULARITY_DESC, page);
-        mCall.enqueue(new Callback<MovieResponse>() {
-            @Override
-            public void onResponse(Response<MovieResponse> response, Retrofit retrofit) {
-                if (response.isSuccess()) {
-                    MovieResponse movieResponse = response.body();
-                    List<Movie> movies = movieResponse.getMovies();
-                    Log.v(LOG_TAG, "onResponse(): movies size = " + movies.size());
-
-                    mMovies.addAll(movies);
-
-                    int insertSize = movies.size();
-                    int insertPos = mMovies.size() - insertSize;
-                    Log.v(LOG_TAG, "onResponse(): insertPos = " + insertPos
-                            + ", insertSize = " + insertSize);
-                    mMovieAdapter.notifyItemRangeInserted(insertPos, insertSize);
-                } else {
-                    int statusCode = response.code();
-                    Log.e(LOG_TAG, "onResponse(): Error code = " + statusCode);
-                }
-                stopRefreshAnimate();
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                stopRefreshAnimate();
-                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        mMainPresenter.fetchMovies(FIRST_PAGE);
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -152,17 +111,50 @@ public class MainActivityFragment extends BaseFragment {
 
         mOnScrollListener = new EndlessRecyclerOnScrollListener(layoutManager) {
             @Override
-            public void onLoadMore(int current_page) {
-                fetchMovies(current_page);
-                Log.v(LOG_TAG, "onLoadMore(): current_page = " + current_page
+            public void onLoadMore(int currentPage) {
+                mMainPresenter.fetchMovies(currentPage);
+                Log.v(LOG_TAG, "onLoadMore(): current_page = " + currentPage
                         + ", mMovies.size() = " + mMovies.size());
             }
         };
         recyclerView.addOnScrollListener(mOnScrollListener);
     }
 
+    private void startRefreshAnimate() {
+        mSwipeLayout.setRefreshing(true);
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
     private void stopRefreshAnimate() {
         mSwipeLayout.setRefreshing(false);
         mProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void toastMessage(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showProgress() {
+        startRefreshAnimate();
+    }
+
+    @Override
+    public void hideProgress() {
+        stopRefreshAnimate();
+    }
+
+    @Override
+    public void appendMovies(List<Movie> movies) {
+        Log.v(LOG_TAG, "appendMovies(): movies.size() = " + movies.size());
+
+        mMovies.addAll(movies);
+
+        int insertSize = movies.size();
+        int insertPos = mMovies.size() - insertSize;
+        Log.v(LOG_TAG, "appendMovies(): insertPos = " + insertPos
+                + ", insertSize = " + insertSize);
+        mMovieAdapter.notifyItemRangeInserted(insertPos, insertSize);
     }
 }
