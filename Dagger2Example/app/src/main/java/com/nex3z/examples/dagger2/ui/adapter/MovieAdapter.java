@@ -15,6 +15,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class MovieAdapter extends  RecyclerView.Adapter<MovieAdapter.ViewHolder> {
     private static final String LOG_TAG = MovieAdapter.class.getSimpleName();
 
@@ -56,14 +59,12 @@ public class MovieAdapter extends  RecyclerView.Adapter<MovieAdapter.ViewHolder>
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView mPoster;
-        public TextView mTitle;
+        @Bind(R.id.movie_poster) ImageView mPoster;
+        @Bind(R.id.movie_title) TextView mTitle;
 
         public ViewHolder(View itemView) {
             super(itemView);
-
-            mPoster = (ImageView) itemView.findViewById(R.id.movie_poster);
-            mTitle = (TextView) itemView.findViewById(R.id.movie_title);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

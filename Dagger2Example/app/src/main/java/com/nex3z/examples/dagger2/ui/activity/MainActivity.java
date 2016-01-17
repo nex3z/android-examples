@@ -1,7 +1,6 @@
 package com.nex3z.examples.dagger2.ui.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,7 +12,7 @@ import com.nex3z.examples.dagger2.internal.component.DaggerRestComponent;
 import com.nex3z.examples.dagger2.internal.component.RestComponent;
 import com.nex3z.examples.dagger2.internal.module.RestModule;
 
-public class MainActivity extends AppCompatActivity implements HasComponent<RestComponent> {
+public class MainActivity extends BaseActivity implements HasComponent<RestComponent> {
 
     private static final String BASE_URL = "http://api.themoviedb.org";
 

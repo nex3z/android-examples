@@ -3,7 +3,6 @@ package com.nex3z.examples.dagger2.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +14,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.nex3z.examples.dagger2.R;
-import com.nex3z.examples.dagger2.internal.HasComponent;
 import com.nex3z.examples.dagger2.internal.component.RestComponent;
 import com.nex3z.examples.dagger2.model.Movie;
 import com.nex3z.examples.dagger2.rest.model.MovieResponse;
@@ -37,7 +35,7 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class MainActivityFragment extends Fragment {
+public class MainActivityFragment extends BaseFragment {
     private static final String LOG_TAG = MainActivityFragment.class.getSimpleName();
     private static final int FIRST_PAGE = 1;
 
@@ -65,11 +63,10 @@ public class MainActivityFragment extends Fragment {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ((HasComponent<RestComponent>)getActivity()).getComponent().inject(this);
+        getComponent(RestComponent.class).inject(this);
     }
 
     @Override
@@ -92,6 +89,12 @@ public class MainActivityFragment extends Fragment {
         });
 
         fetchMovies();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 
     private void fetchMovies() {
