@@ -21,6 +21,7 @@ import dagger.Module;
 import dagger.Provides;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
+import retrofit.RxJavaCallAdapterFactory;
 
 @Module
 public class RestModule {
@@ -80,6 +81,7 @@ public class RestModule {
                 .baseUrl(mBaseUrl)
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
 
         return retrofit;
