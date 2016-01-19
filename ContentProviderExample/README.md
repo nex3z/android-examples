@@ -2,7 +2,7 @@
 
 ## Description
 
-An example of ContentProvider.
+An example of [ContentProvider](http://developer.android.com/guide/topics/providers/content-providers.html).
 
 ## About API key
 
