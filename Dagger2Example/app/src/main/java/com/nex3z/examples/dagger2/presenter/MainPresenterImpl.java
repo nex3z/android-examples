@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.nex3z.examples.dagger2.interactor.MovieInteractor;
 import com.nex3z.examples.dagger2.model.Movie;
-import com.nex3z.examples.dagger2.ui.MovieGridView;
+import com.nex3z.examples.dagger2.view.MovieGridView;
 
 import java.util.List;
 

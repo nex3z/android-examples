@@ -1,4 +1,4 @@
-package com.nex3z.examples.dagger2.ui.activity;
+package com.nex3z.examples.dagger2.view.activity;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -13,7 +13,7 @@ import com.nex3z.examples.dagger2.internal.component.DaggerMainComponent;
 import com.nex3z.examples.dagger2.internal.component.MainComponent;
 import com.nex3z.examples.dagger2.internal.module.MainModule;
 import com.nex3z.examples.dagger2.internal.module.RestModule;
-import com.nex3z.examples.dagger2.ui.MovieGridView;
+import com.nex3z.examples.dagger2.view.MovieGridView;
 
 public class MainActivity extends BaseActivity implements HasComponent<MainComponent> {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();

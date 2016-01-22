@@ -1,4 +1,4 @@
-package com.nex3z.examples.dagger2.ui.misc;
+package com.nex3z.examples.dagger2.view.misc;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;

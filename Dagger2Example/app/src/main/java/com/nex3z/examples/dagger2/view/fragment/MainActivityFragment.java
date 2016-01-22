@@ -1,4 +1,4 @@
-package com.nex3z.examples.dagger2.ui.fragment;
+package com.nex3z.examples.dagger2.view.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,10 +17,10 @@ import com.nex3z.examples.dagger2.R;
 import com.nex3z.examples.dagger2.internal.component.MainComponent;
 import com.nex3z.examples.dagger2.model.Movie;
 import com.nex3z.examples.dagger2.presenter.MainPresenter;
-import com.nex3z.examples.dagger2.ui.MovieGridView;
-import com.nex3z.examples.dagger2.ui.adapter.MovieAdapter;
-import com.nex3z.examples.dagger2.ui.misc.EndlessRecyclerOnScrollListener;
-import com.nex3z.examples.dagger2.ui.misc.SpacesItemDecoration;
+import com.nex3z.examples.dagger2.view.MovieGridView;
+import com.nex3z.examples.dagger2.view.adapter.MovieAdapter;
+import com.nex3z.examples.dagger2.view.misc.EndlessRecyclerOnScrollListener;
+import com.nex3z.examples.dagger2.view.misc.SpacesItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;

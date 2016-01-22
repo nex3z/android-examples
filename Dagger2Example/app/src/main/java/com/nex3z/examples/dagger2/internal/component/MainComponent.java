@@ -3,8 +3,8 @@ package com.nex3z.examples.dagger2.internal.component;
 import com.nex3z.examples.dagger2.internal.PerActivity;
 import com.nex3z.examples.dagger2.internal.module.MainModule;
 import com.nex3z.examples.dagger2.internal.module.RestModule;
-import com.nex3z.examples.dagger2.ui.activity.MainActivity;
-import com.nex3z.examples.dagger2.ui.fragment.MainActivityFragment;
+import com.nex3z.examples.dagger2.view.activity.MainActivity;
+import com.nex3z.examples.dagger2.view.fragment.MainActivityFragment;
 
 import dagger.Component;
 

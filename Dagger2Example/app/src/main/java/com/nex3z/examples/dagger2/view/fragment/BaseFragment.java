@@ -1,4 +1,4 @@
-package com.nex3z.examples.dagger2.ui.fragment;
+package com.nex3z.examples.dagger2.view.fragment;
 
 
 import android.support.v4.app.Fragment;

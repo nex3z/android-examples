@@ -1,4 +1,4 @@
-package com.nex3z.examples.dagger2.ui;
+package com.nex3z.examples.dagger2.view;
 
 
 import com.nex3z.examples.dagger2.model.Movie;

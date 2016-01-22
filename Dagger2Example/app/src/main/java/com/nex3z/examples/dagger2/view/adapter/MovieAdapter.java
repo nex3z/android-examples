@@ -1,4 +1,4 @@
-package com.nex3z.examples.dagger2.ui.adapter;
+package com.nex3z.examples.dagger2.view.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

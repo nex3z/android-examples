@@ -6,7 +6,7 @@ import com.nex3z.examples.dagger2.internal.PerActivity;
 import com.nex3z.examples.dagger2.presenter.MainPresenter;
 import com.nex3z.examples.dagger2.presenter.MainPresenterImpl;
 import com.nex3z.examples.dagger2.rest.service.MovieService;
-import com.nex3z.examples.dagger2.ui.MovieGridView;
+import com.nex3z.examples.dagger2.view.MovieGridView;
 
 import dagger.Module;
 import dagger.Provides;

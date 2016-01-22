@@ -1,4 +1,4 @@
-package com.nex3z.examples.dagger2.ui.activity;
+package com.nex3z.examples.dagger2.view.activity;
 
 import android.support.v7.app.AppCompatActivity;
 

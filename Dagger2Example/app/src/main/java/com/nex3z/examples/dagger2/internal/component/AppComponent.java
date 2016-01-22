@@ -5,7 +5,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.nex3z.examples.dagger2.internal.module.AppModule;
-import com.nex3z.examples.dagger2.ui.activity.MainActivity;
+import com.nex3z.examples.dagger2.view.activity.MainActivity;
 
 import javax.inject.Singleton;
 
