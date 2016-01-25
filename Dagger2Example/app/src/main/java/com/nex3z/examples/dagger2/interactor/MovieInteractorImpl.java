@@ -31,9 +31,9 @@ public class MovieInteractorImpl implements MovieInteractor {
                 .retry(2)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .map(response-> response.getMovies())
                 .subscribe(
-                        response -> {
-                            List<Movie> movies = response.getMovies();
+                        movies -> {
                             Log.v(LOG_TAG, "onResponse(): movies size = " + movies.size());
                             listener.onSuccess(movies);
                         },
