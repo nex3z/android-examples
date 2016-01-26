@@ -1,6 +1,6 @@
-package com.nex3z.examples.dagger2.rest.service;
+package com.nex3z.examples.dagger2.data.rest.service;
 
-import com.nex3z.examples.dagger2.rest.model.MovieResponse;
+import com.nex3z.examples.dagger2.data.rest.model.MovieResponse;
 
 import retrofit.http.GET;
 import retrofit.http.Query;

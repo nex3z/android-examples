@@ -3,11 +3,9 @@ package com.nex3z.examples.dagger2.interactor;
 
 import android.util.Log;
 
-import com.nex3z.examples.dagger2.model.Movie;
+import com.nex3z.examples.dagger2.data.rest.service.MovieService;
 import com.nex3z.examples.dagger2.presenter.OnDataReceivedListener;
-import com.nex3z.examples.dagger2.rest.service.MovieService;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import rx.android.schedulers.AndroidSchedulers;

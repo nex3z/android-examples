@@ -3,8 +3,8 @@ package com.nex3z.examples.dagger2.presenter;
 
 import android.util.Log;
 
+import com.nex3z.examples.dagger2.data.entity.MovieEntity;
 import com.nex3z.examples.dagger2.interactor.MovieInteractor;
-import com.nex3z.examples.dagger2.model.Movie;
 import com.nex3z.examples.dagger2.view.MovieGridView;
 
 import java.util.List;
@@ -35,7 +35,7 @@ public class MainPresenterImpl implements MainPresenter, OnDataReceivedListener 
     }
 
     @Override
-    public void onSuccess(List<Movie> movies) {
+    public void onSuccess(List<MovieEntity> movies) {
         Log.v(LOG_TAG, "onSuccess(): movies.size() = " + movies.size());
         mMainView.hideProgress();
         mMainView.appendMovies(movies);

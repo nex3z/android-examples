@@ -1,7 +1,7 @@
-package com.nex3z.examples.dagger2.rest.model;
+package com.nex3z.examples.dagger2.data.rest.model;
 
 import com.google.gson.annotations.SerializedName;
-import com.nex3z.examples.dagger2.model.Movie;
+import com.nex3z.examples.dagger2.data.entity.MovieEntity;
 
 import java.util.List;
 
@@ -9,9 +9,9 @@ public class MovieResponse {
     private long page;
 
     @SerializedName("results")
-    private List<Movie> movies;
+    private List<MovieEntity> movies;
 
-    public List<Movie> getMovies() {
+    public List<MovieEntity> getMovies() {
         return movies;
     }
 }

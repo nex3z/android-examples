@@ -1,7 +1,6 @@
 package com.nex3z.examples.dagger2.view;
 
-
-import com.nex3z.examples.dagger2.model.Movie;
+import com.nex3z.examples.dagger2.data.entity.MovieEntity;
 
 import java.util.List;
 
@@ -11,7 +10,7 @@ public interface MovieGridView {
 
     void hideProgress();
 
-    void appendMovies(List<Movie> movies);
+    void appendMovies(List<MovieEntity> movies);
 
     void toastMessage(String message);
 

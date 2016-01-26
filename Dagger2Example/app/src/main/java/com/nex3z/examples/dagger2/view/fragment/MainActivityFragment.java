@@ -14,8 +14,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.nex3z.examples.dagger2.R;
+import com.nex3z.examples.dagger2.data.entity.MovieEntity;
 import com.nex3z.examples.dagger2.internal.component.MainComponent;
-import com.nex3z.examples.dagger2.model.Movie;
 import com.nex3z.examples.dagger2.presenter.MainPresenter;
 import com.nex3z.examples.dagger2.view.MovieGridView;
 import com.nex3z.examples.dagger2.view.adapter.MovieAdapter;
@@ -36,7 +36,7 @@ public class MainActivityFragment extends BaseFragment implements MovieGridView 
     private static final int FIRST_PAGE = 1;
 
     private MovieAdapter mMovieAdapter;
-    private List<Movie> mMovies = new ArrayList<>();
+    private List<MovieEntity> mMovies = new ArrayList<>();
     private EndlessRecyclerOnScrollListener mOnScrollListener;
 
     @Bind(R.id.movie_grid) RecyclerView mRecyclerView;
@@ -146,7 +146,7 @@ public class MainActivityFragment extends BaseFragment implements MovieGridView 
     }
 
     @Override
-    public void appendMovies(List<Movie> movies) {
+    public void appendMovies(List<MovieEntity> movies) {
         Log.v(LOG_TAG, "appendMovies(): movies.size() = " + movies.size());
 
         mMovies.addAll(movies);

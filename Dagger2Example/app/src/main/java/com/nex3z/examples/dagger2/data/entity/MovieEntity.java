@@ -1,11 +1,11 @@
-package com.nex3z.examples.dagger2.model;
+package com.nex3z.examples.dagger2.data.entity;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Movie {
+public class MovieEntity {
     private boolean adult;
 
     @SerializedName("backdrop_path")

@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nex3z.examples.dagger2.BuildConfig;
 import com.nex3z.examples.dagger2.internal.PerActivity;
-import com.nex3z.examples.dagger2.rest.service.MovieService;
+import com.nex3z.examples.dagger2.data.rest.service.MovieService;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.Interceptor;
