@@ -10,14 +10,20 @@ public class GetMovieList extends UseCase {
 
     private final MovieRepository mMovieRepository;
 
+    private int mPage = 1;
+
     public GetMovieList(MovieRepository movieRepository, ThreadExecutor threadExecutor,
                         PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         mMovieRepository = movieRepository;
     }
 
+    public void setPage(int page) {
+        mPage = page;
+    }
+
     @Override
     protected Observable buildUseCaseObservable() {
-        return mMovieRepository.movies();
+        return mMovieRepository.movies(mPage);
     }
 }
