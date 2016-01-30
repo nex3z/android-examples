@@ -31,10 +31,10 @@ public class MovieEntityDataMapper {
         return movie;
     }
 
-    public List<Movie> transform(Collection<MovieEntity> userEntityCollection) {
+    public List<Movie> transform(Collection<MovieEntity> movieEntityCollection) {
         List<Movie> movieList = new ArrayList<>(20);
         Movie movie;
-        for (MovieEntity movieEntity : userEntityCollection) {
+        for (MovieEntity movieEntity : movieEntityCollection) {
             movie = transform(movieEntity);
             if (movie != null) {
                 movieList.add(movie);
