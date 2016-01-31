@@ -14,39 +14,46 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.nex3z.examlpes.mvp.R;
-import com.nex3z.examlpes.mvp.data.entity.MovieEntity;
-import com.nex3z.examlpes.mvp.presentation.internal.component.MainComponent;
-import com.nex3z.examlpes.mvp.presentation.presenter.MainPresenter;
-import com.nex3z.examlpes.mvp.presentation.view.MovieGridView;
+import com.nex3z.examlpes.mvp.data.entity.mapper.MovieEntityDataMapper;
+import com.nex3z.examlpes.mvp.data.executor.JobExecutor;
+import com.nex3z.examlpes.mvp.data.repository.MovieDataRepository;
+import com.nex3z.examlpes.mvp.data.repository.datasource.MovieDataStoreFactory;
+import com.nex3z.examlpes.mvp.data.rest.RestClient;
+import com.nex3z.examlpes.mvp.domain.executor.PostExecutionThread;
+import com.nex3z.examlpes.mvp.domain.executor.ThreadExecutor;
+import com.nex3z.examlpes.mvp.domain.interactor.GetMovieList;
+import com.nex3z.examlpes.mvp.presentation.UIThread;
+import com.nex3z.examlpes.mvp.presentation.mapper.MovieModelDataMapper;
+import com.nex3z.examlpes.mvp.presentation.model.MovieModel;
+import com.nex3z.examlpes.mvp.presentation.presenter.MovieListPresenter;
+import com.nex3z.examlpes.mvp.presentation.view.MovieListView;
 import com.nex3z.examlpes.mvp.presentation.view.adapter.MovieAdapter;
 import com.nex3z.examlpes.mvp.presentation.view.misc.EndlessRecyclerOnScrollListener;
 import com.nex3z.examlpes.mvp.presentation.view.misc.SpacesItemDecoration;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 
-public class MainActivityFragment extends BaseFragment implements MovieGridView {
+public class MainActivityFragment extends BaseFragment implements MovieListView {
     private static final String LOG_TAG = MainActivityFragment.class.getSimpleName();
     private static final int FIRST_PAGE = 1;
 
     private MovieAdapter mMovieAdapter;
-    private List<MovieEntity> mMovies = new ArrayList<>();
+    private List<MovieModel> mMovies = new ArrayList<>();
     private EndlessRecyclerOnScrollListener mOnScrollListener;
+
+    private MovieListPresenter mMovieListPresenter;
 
     @Bind(R.id.movie_grid)
     RecyclerView mRecyclerView;
     @Bind(R.id.swipe_container)
     SwipeRefreshLayout mSwipeLayout;
     @Bind(R.id.progressbar) ProgressBar mProgressBar;
-
-    @Inject
-    MainPresenter mMainPresenter;
 
     public MainActivityFragment() { }
 
@@ -64,7 +71,8 @@ public class MainActivityFragment extends BaseFragment implements MovieGridView 
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getComponent(MainComponent.class).inject(this);
+        initPresenter();
+//        getComponent(MainComponent.class).inject(this);
     }
 
     @Override
@@ -92,12 +100,28 @@ public class MainActivityFragment extends BaseFragment implements MovieGridView 
         ButterKnife.unbind(this);
     }
 
+    private void initPresenter() {
+        ThreadExecutor threadExecutor = JobExecutor.getInstance();
+        PostExecutionThread postExecutionThread = new UIThread();
+
+        RestClient restClient = new RestClient();
+        MovieDataStoreFactory movieDataStoreFactory = new MovieDataStoreFactory(restClient.getRetrofit());
+        MovieEntityDataMapper movieEntityDataMapper = new MovieEntityDataMapper();
+        MovieDataRepository movieDataRepository = new MovieDataRepository(movieDataStoreFactory, movieEntityDataMapper);
+
+        GetMovieList getMovieList = new GetMovieList(movieDataRepository, threadExecutor, postExecutionThread);
+        MovieModelDataMapper movieModelDataMapper = new MovieModelDataMapper();
+        mMovieListPresenter = new MovieListPresenter(getMovieList, movieModelDataMapper);
+        mMovieListPresenter.setView(this);
+
+    }
+
     private void fetchInitialMovies() {
         mMovies.clear();
         if (mMovieAdapter != null) {
             mMovieAdapter.notifyDataSetChanged();
         }
-        mMainPresenter.fetchMovies(FIRST_PAGE);
+        mMovieListPresenter.getMovieList(FIRST_PAGE);
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -115,7 +139,7 @@ public class MainActivityFragment extends BaseFragment implements MovieGridView 
         mOnScrollListener = new EndlessRecyclerOnScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int currentPage) {
-                mMainPresenter.fetchMovies(currentPage);
+                mMovieListPresenter.getMovieList(currentPage);
                 Log.v(LOG_TAG, "onLoadMore(): current_page = " + currentPage
                         + ", mMovies.size() = " + mMovies.size());
             }
@@ -134,30 +158,35 @@ public class MainActivityFragment extends BaseFragment implements MovieGridView 
     }
 
     @Override
-    public void toastMessage(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    public void renderMovieList(Collection<MovieModel> movieModelCollection) {
+
     }
 
     @Override
-    public void showProgress() {
-        startRefreshAnimate();
-    }
+    public void appendMovieList(Collection<MovieModel> movieModelCollection) {
+        Log.v(LOG_TAG, "appendMovies(): movies.size() = " + movieModelCollection.size());
 
-    @Override
-    public void hideProgress() {
-        stopRefreshAnimate();
-    }
+        mMovies.addAll(movieModelCollection);
 
-    @Override
-    public void appendMovies(List<MovieEntity> movies) {
-        Log.v(LOG_TAG, "appendMovies(): movies.size() = " + movies.size());
-
-        mMovies.addAll(movies);
-
-        int insertSize = movies.size();
+        int insertSize = movieModelCollection.size();
         int insertPos = mMovies.size() - insertSize;
         Log.v(LOG_TAG, "appendMovies(): insertPos = " + insertPos
                 + ", insertSize = " + insertSize);
         mMovieAdapter.notifyItemRangeInserted(insertPos, insertSize);
+    }
+
+    @Override
+    public void showLoading() {
+        startRefreshAnimate();
+    }
+
+    @Override
+    public void hideLoading() {
+        stopRefreshAnimate();
+    }
+
+    @Override
+    public void showError(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 }

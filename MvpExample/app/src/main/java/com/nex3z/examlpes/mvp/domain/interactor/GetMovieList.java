@@ -8,6 +8,7 @@ import com.nex3z.examlpes.mvp.domain.repository.MovieRepository;
 import rx.Observable;
 
 public class GetMovieList extends UseCase {
+    private static final String LOG_TAG = GetMovieList.class.getSimpleName();
 
     private final MovieRepository mMovieRepository;
 

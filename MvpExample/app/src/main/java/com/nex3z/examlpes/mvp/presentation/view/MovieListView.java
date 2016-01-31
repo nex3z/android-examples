@@ -7,6 +7,8 @@ import java.util.Collection;
 
 public interface MovieListView extends LoadDataView {
 
-    void renderUserList(Collection<MovieModel> movieModelCollection);
+    void renderMovieList(Collection<MovieModel> movieModelCollection);
+
+    void appendMovieList(Collection<MovieModel> movieModelCollection);
 
 }

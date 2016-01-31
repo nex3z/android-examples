@@ -1,6 +1,8 @@
 package com.nex3z.examlpes.mvp.data.repository;
 
 
+import android.util.Log;
+
 import com.nex3z.examlpes.mvp.data.entity.mapper.MovieEntityDataMapper;
 import com.nex3z.examlpes.mvp.data.repository.datasource.MovieDataStore;
 import com.nex3z.examlpes.mvp.data.repository.datasource.MovieDataStoreFactory;
@@ -15,6 +17,7 @@ import rx.Observable;
 
 @Singleton
 public class MovieDataRepository implements MovieRepository {
+    private static final String LOG_TAG = MovieDataRepository.class.getSimpleName();
 
     private final MovieDataStoreFactory mMovieDataStoreFactory;
     private final MovieEntityDataMapper mMovieEntityDataMapper;
@@ -28,6 +31,7 @@ public class MovieDataRepository implements MovieRepository {
 
     @Override
     public Observable<List<Movie>> movies(int page) {
+        Log.v(LOG_TAG, "movies(): page = " + page);
         final MovieDataStore movieDataStore = mMovieDataStoreFactory.createCloudDataStore();
         return movieDataStore
                 .movieEntityList(page)

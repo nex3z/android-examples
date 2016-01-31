@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nex3z.examlpes.mvp.R;
-import com.nex3z.examlpes.mvp.data.entity.MovieEntity;
+import com.nex3z.examlpes.mvp.presentation.model.MovieModel;
 import com.nex3z.examlpes.mvp.presentation.util.ImageUtility;
 import com.squareup.picasso.Picasso;
 
@@ -21,9 +21,9 @@ import butterknife.ButterKnife;
 public class MovieAdapter extends  RecyclerView.Adapter<MovieAdapter.ViewHolder> {
     private static final String LOG_TAG = MovieAdapter.class.getSimpleName();
 
-    private List<MovieEntity> mMovies;
+    private List<MovieModel> mMovies;
 
-    public MovieAdapter(List<MovieEntity> movies) {
+    public MovieAdapter(List<MovieModel> movies) {
         mMovies = movies;
     }
 
@@ -40,11 +40,11 @@ public class MovieAdapter extends  RecyclerView.Adapter<MovieAdapter.ViewHolder>
 
     @Override
     public void onBindViewHolder(MovieAdapter.ViewHolder holder, int position) {
-        MovieEntity movieEntity = mMovies.get(position);
+        MovieModel movieModel = mMovies.get(position);
 
-        holder.mTitle.setText(movieEntity.getTitle());
+        holder.mTitle.setText(movieModel.getTitle());
 
-        String key = movieEntity.getPosterPath();
+        String key = movieModel.getPosterPath();
         String url = ImageUtility.getImageUrl(key);
         Picasso.with(holder.itemView.getContext())
                 .load(url)

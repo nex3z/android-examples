@@ -9,6 +9,7 @@ import java.util.List;
 import rx.Observable;
 
 public class CloudMovieDataStore implements MovieDataStore {
+    private static final String LOG_TAG = CloudMovieDataStore.class.getSimpleName();
 
     private final MovieService mMovieService;
 
