@@ -72,7 +72,6 @@ public class MainActivityFragment extends BaseFragment implements MovieListView 
         super.onActivityCreated(savedInstanceState);
 
         initPresenter();
-//        getComponent(MainComponent.class).inject(this);
     }
 
     @Override

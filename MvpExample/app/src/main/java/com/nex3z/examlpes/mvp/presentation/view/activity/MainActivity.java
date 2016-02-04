@@ -7,17 +7,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.nex3z.examlpes.mvp.R;
-import com.nex3z.examlpes.mvp.presentation.internal.HasComponent;
-import com.nex3z.examlpes.mvp.presentation.internal.component.MainComponent;
 import com.nex3z.examlpes.mvp.presentation.view.MovieListView;
 
 
-public class MainActivity extends BaseActivity implements HasComponent<MainComponent> {
+public class MainActivity extends BaseActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private static final String BASE_URL = "http://api.themoviedb.org";
 
-    private MainComponent mMainComponent;
     private MovieListView mMovieListView;
 
     @Override
@@ -30,7 +27,6 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
         mMovieListView = (MovieListView) getSupportFragmentManager().findFragmentById(R.id.fragment);
         Log.v(LOG_TAG, "onCreate(): mMovieListView = " + mMovieListView);
 
-//        initInjector();
     }
 
     @Override
@@ -48,19 +44,6 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-//    private void initInjector() {
-//        mMainComponent = DaggerMainComponent.builder()
-//                .appComponent(((App)getApplication()).getAppComponent())
-//                .mainModule(new MainModule(mMovieListView))
-//                .restModule(new RestModule(BASE_URL))
-//                .build();
-//    }
-
-    @Override
-    public MainComponent getComponent() {
-        return mMainComponent;
     }
 
 }

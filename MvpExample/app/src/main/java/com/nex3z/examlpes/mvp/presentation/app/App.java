@@ -3,8 +3,6 @@ package com.nex3z.examlpes.mvp.presentation.app;
 import android.app.Application;
 
 import com.nex3z.examlpes.mvp.presentation.internal.component.AppComponent;
-import com.nex3z.examlpes.mvp.presentation.internal.component.DaggerAppComponent;
-import com.nex3z.examlpes.mvp.presentation.internal.module.AppModule;
 
 
 public class App extends Application {
@@ -16,9 +14,9 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        mAppComponent = DaggerAppComponent.builder()
-                .appModule(new AppModule(this))
-                .build();
+//        mAppComponent = DaggerAppComponent.builder()
+//                .appModule(new AppModule(this))
+//                .build();
     }
 
     public AppComponent getAppComponent() {
