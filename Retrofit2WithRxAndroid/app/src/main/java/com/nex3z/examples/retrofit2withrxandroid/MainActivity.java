@@ -57,7 +57,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mGetMovieSub.unsubscribe();
+        if (mGetMovieSub != null) {
+            mGetMovieSub.unsubscribe();
+        }
     }
 
     private void updateListView() {
