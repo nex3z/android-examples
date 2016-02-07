@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView mListView;
     private ArrayAdapter<String> mMovieAdapter;
     private List<Movie> mMovies;
+    private Subscription mGetMovieSub;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         MovieService movieService = App.getRestClient().getMovieService();
 
-        movieService.getMovies(MovieService.SORT_BY_POPULARITY_DESC)
+        mGetMovieSub = movieService.getMovies(MovieService.SORT_BY_POPULARITY_DESC)
                 .timeout(5, TimeUnit.SECONDS)
                 .retry(2)
                 .subscribeOn(Schedulers.io())
@@ -50,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
                                     throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                         }
                 );
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mGetMovieSub.unsubscribe();
     }
 
     private void updateListView() {
