@@ -152,9 +152,9 @@ public class MainActivityFragment extends BaseFragment {
 
         mOnScrollListener = new EndlessRecyclerOnScrollListener(layoutManager) {
             @Override
-            public void onLoadMore(int current_page) {
-                fetchMovies(current_page);
-                Log.v(LOG_TAG, "onLoadMore(): current_page = " + current_page
+            public void onLoadMore(int currentPage) {
+                fetchMovies(currentPage);
+                Log.v(LOG_TAG, "onLoadMore(): currentPage = " + currentPage
                         + ", mMovies.size() = " + mMovies.size());
             }
         };

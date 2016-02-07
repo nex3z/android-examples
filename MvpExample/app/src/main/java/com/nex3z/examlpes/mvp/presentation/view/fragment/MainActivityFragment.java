@@ -139,7 +139,7 @@ public class MainActivityFragment extends BaseFragment implements MovieListView 
             @Override
             public void onLoadMore(int currentPage) {
                 mMovieListPresenter.getMovieList(currentPage);
-                Log.v(LOG_TAG, "onLoadMore(): current_page = " + currentPage
+                Log.v(LOG_TAG, "onLoadMore(): currentPage = " + currentPage
                         + ", mMovies.size() = " + mMovies.size());
             }
         };
