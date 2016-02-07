@@ -2,7 +2,7 @@
 
 ## Description
 
-An simple example of MVP on Android. Following the clean architechure at [Here](http://fernandocejas.com/2014/09/03/architecting-android-the-clean-way/). 
+An simple example of MVP on Android. Trying to follow the clean architechure described in [The Clean Architecture](https://blog.8thlight.com/uncle-bob/2012/08/13/the-clean-architecture.html), [Architecting Android…The clean way?](http://fernandocejas.com/2014/09/03/architecting-android-the-clean-way/) and [Architecting Android…The evolution](http://fernandocejas.com/2015/07/18/architecting-android-the-evolution/).
 
 
 ## About API key
