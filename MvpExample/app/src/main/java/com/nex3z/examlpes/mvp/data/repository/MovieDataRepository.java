@@ -11,6 +11,7 @@ import com.nex3z.examlpes.mvp.domain.repository.MovieRepository;
 
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import rx.Observable;
@@ -22,6 +23,7 @@ public class MovieDataRepository implements MovieRepository {
     private final MovieDataStoreFactory mMovieDataStoreFactory;
     private final MovieEntityDataMapper mMovieEntityDataMapper;
 
+    @Inject
     public MovieDataRepository(MovieDataStoreFactory movieDataStoreFactory,
                                MovieEntityDataMapper movieEntityDataMapper) {
         mMovieDataStoreFactory = movieDataStoreFactory;

@@ -7,19 +7,26 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.nex3z.examlpes.mvp.R;
+import com.nex3z.examlpes.mvp.presentation.internal.HasComponent;
+import com.nex3z.examlpes.mvp.presentation.internal.component.DaggerMovieComponent;
+import com.nex3z.examlpes.mvp.presentation.internal.component.MovieComponent;
 import com.nex3z.examlpes.mvp.presentation.view.MovieListView;
 
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements HasComponent<MovieComponent> {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private static final String BASE_URL = "http://api.themoviedb.org";
 
+    private MovieComponent mMovieComponent;
     private MovieListView mMovieListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        initializeInjector();
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -44,6 +51,18 @@ public class MainActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public MovieComponent getComponent() {
+        return mMovieComponent;
+    }
+
+    private void initializeInjector() {
+        mMovieComponent = DaggerMovieComponent.builder()
+                .appComponent(getApplicationComponent())
+                .activityModule(getActivityModule())
+                .build();
     }
 
 }

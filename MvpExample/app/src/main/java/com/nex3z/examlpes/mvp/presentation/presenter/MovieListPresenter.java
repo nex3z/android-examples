@@ -9,6 +9,7 @@ import com.nex3z.examlpes.mvp.domain.exception.ErrorBundle;
 import com.nex3z.examlpes.mvp.domain.interactor.DefaultSubscriber;
 import com.nex3z.examlpes.mvp.domain.interactor.GetMovieList;
 import com.nex3z.examlpes.mvp.domain.interactor.UseCase;
+import com.nex3z.examlpes.mvp.presentation.internal.PerActivity;
 import com.nex3z.examlpes.mvp.presentation.mapper.MovieModelDataMapper;
 import com.nex3z.examlpes.mvp.presentation.model.MovieModel;
 import com.nex3z.examlpes.mvp.presentation.view.MovieListView;
@@ -16,6 +17,9 @@ import com.nex3z.examlpes.mvp.presentation.view.MovieListView;
 import java.util.Collection;
 import java.util.List;
 
+import javax.inject.Inject;
+
+@PerActivity
 public class MovieListPresenter implements Presenter {
     private static final String LOG_TAG = MovieListPresenter.class.getSimpleName();
 
@@ -24,6 +28,7 @@ public class MovieListPresenter implements Presenter {
     private final UseCase mMovieListUseCase;
     private final MovieModelDataMapper mMovieModelDataMapper;
 
+    @Inject
     public MovieListPresenter(UseCase movieListUseCase,
                               MovieModelDataMapper movieModelDataMapper) {
         mMovieListUseCase = movieListUseCase;

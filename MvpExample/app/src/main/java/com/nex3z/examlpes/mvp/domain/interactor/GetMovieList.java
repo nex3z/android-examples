@@ -5,6 +5,8 @@ import com.nex3z.examlpes.mvp.domain.executor.PostExecutionThread;
 import com.nex3z.examlpes.mvp.domain.executor.ThreadExecutor;
 import com.nex3z.examlpes.mvp.domain.repository.MovieRepository;
 
+import javax.inject.Inject;
+
 import rx.Observable;
 
 public class GetMovieList extends UseCase {
@@ -14,6 +16,7 @@ public class GetMovieList extends UseCase {
 
     private int mPage = 1;
 
+    @Inject
     public GetMovieList(MovieRepository movieRepository, ThreadExecutor threadExecutor,
                         PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);

@@ -2,13 +2,20 @@ package com.nex3z.examlpes.mvp.presentation.mapper;
 
 
 import com.nex3z.examlpes.mvp.domain.Movie;
+import com.nex3z.examlpes.mvp.presentation.internal.PerActivity;
 import com.nex3z.examlpes.mvp.presentation.model.MovieModel;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import javax.inject.Inject;
+
+@PerActivity
 public class MovieModelDataMapper {
+
+    @Inject
+    public MovieModelDataMapper() { }
 
     public MovieModel transform(Movie movie) {
         if (movie == null) {

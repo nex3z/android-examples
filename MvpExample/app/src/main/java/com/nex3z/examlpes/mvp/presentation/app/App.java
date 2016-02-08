@@ -4,6 +4,9 @@ import android.app.Application;
 
 import com.nex3z.examlpes.mvp.presentation.internal.component.AppComponent;
 
+import com.nex3z.examlpes.mvp.presentation.internal.component.DaggerAppComponent;
+import com.nex3z.examlpes.mvp.presentation.internal.module.AppModule;
+
 
 public class App extends Application {
     private static final String BASE_URL = "http://api.themoviedb.org";
@@ -13,10 +16,13 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        initializeInjector();
+    }
 
-//        mAppComponent = DaggerAppComponent.builder()
-//                .appModule(new AppModule(this))
-//                .build();
+    private void initializeInjector() {
+        mAppComponent = DaggerAppComponent.builder()
+                .appModule(new AppModule(this))
+                .build();
     }
 
     public AppComponent getAppComponent() {

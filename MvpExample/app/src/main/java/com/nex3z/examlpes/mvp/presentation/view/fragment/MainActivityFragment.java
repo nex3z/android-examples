@@ -23,6 +23,7 @@ import com.nex3z.examlpes.mvp.domain.executor.PostExecutionThread;
 import com.nex3z.examlpes.mvp.domain.executor.ThreadExecutor;
 import com.nex3z.examlpes.mvp.domain.interactor.GetMovieList;
 import com.nex3z.examlpes.mvp.presentation.UIThread;
+import com.nex3z.examlpes.mvp.presentation.internal.component.MovieComponent;
 import com.nex3z.examlpes.mvp.presentation.mapper.MovieModelDataMapper;
 import com.nex3z.examlpes.mvp.presentation.model.MovieModel;
 import com.nex3z.examlpes.mvp.presentation.presenter.MovieListPresenter;
@@ -34,6 +35,8 @@ import com.nex3z.examlpes.mvp.presentation.view.misc.SpacesItemDecoration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -47,12 +50,10 @@ public class MainActivityFragment extends BaseFragment implements MovieListView 
     private List<MovieModel> mMovies = new ArrayList<>();
     private EndlessRecyclerOnScrollListener mOnScrollListener;
 
-    private MovieListPresenter mMovieListPresenter;
+    @Inject MovieListPresenter mMovieListPresenter;
 
-    @Bind(R.id.movie_grid)
-    RecyclerView mRecyclerView;
-    @Bind(R.id.swipe_container)
-    SwipeRefreshLayout mSwipeLayout;
+    @Bind(R.id.movie_grid) RecyclerView mRecyclerView;
+    @Bind(R.id.swipe_container) SwipeRefreshLayout mSwipeLayout;
     @Bind(R.id.progressbar) ProgressBar mProgressBar;
 
     public MainActivityFragment() { }
@@ -63,15 +64,15 @@ public class MainActivityFragment extends BaseFragment implements MovieListView 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         ButterKnife.bind(this, rootView);
+        getComponent(MovieComponent.class).inject(this);
 
         return rootView;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        initPresenter();
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mMovieListPresenter.setView(this);
     }
 
     @Override
@@ -97,22 +98,6 @@ public class MainActivityFragment extends BaseFragment implements MovieListView 
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-    }
-
-    private void initPresenter() {
-        ThreadExecutor threadExecutor = JobExecutor.getInstance();
-        PostExecutionThread postExecutionThread = new UIThread();
-
-        RestClient restClient = new RestClient();
-        MovieDataStoreFactory movieDataStoreFactory = new MovieDataStoreFactory(restClient.getRetrofit());
-        MovieEntityDataMapper movieEntityDataMapper = new MovieEntityDataMapper();
-        MovieDataRepository movieDataRepository = new MovieDataRepository(movieDataStoreFactory, movieEntityDataMapper);
-
-        GetMovieList getMovieList = new GetMovieList(movieDataRepository, threadExecutor, postExecutionThread);
-        MovieModelDataMapper movieModelDataMapper = new MovieModelDataMapper();
-        mMovieListPresenter = new MovieListPresenter(getMovieList, movieModelDataMapper);
-        mMovieListPresenter.setView(this);
-
     }
 
     private void fetchInitialMovies() {

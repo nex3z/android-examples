@@ -1,6 +1,5 @@
 package com.nex3z.examlpes.mvp.data.entity.mapper;
 
-
 import com.nex3z.examlpes.mvp.data.entity.MovieEntity;
 import com.nex3z.examlpes.mvp.domain.Movie;
 
@@ -8,7 +7,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class MovieEntityDataMapper {
+
+    @Inject
+    public MovieEntityDataMapper() { }
 
     public Movie transform(MovieEntity movieEntity) {
         Movie movie = null;
