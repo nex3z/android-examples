@@ -16,8 +16,6 @@ import com.nex3z.examlpes.mvp.presentation.view.MovieListView;
 public class MainActivity extends BaseActivity implements HasComponent<MovieComponent> {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    private static final String BASE_URL = "http://api.themoviedb.org";
-
     private MovieComponent mMovieComponent;
     private MovieListView mMovieListView;
 

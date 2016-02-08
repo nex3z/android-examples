@@ -14,11 +14,13 @@ import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 import java.io.IOException;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
 
+@Singleton
 public class RestClient {
     private static final String BASE_URL = "http://api.themoviedb.org";
     private MovieService mMovieService;
