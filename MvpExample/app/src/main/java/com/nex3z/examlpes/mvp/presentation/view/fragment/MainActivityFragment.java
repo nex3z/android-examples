@@ -14,17 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.nex3z.examlpes.mvp.R;
-import com.nex3z.examlpes.mvp.data.entity.mapper.MovieEntityDataMapper;
-import com.nex3z.examlpes.mvp.data.executor.JobExecutor;
-import com.nex3z.examlpes.mvp.data.repository.MovieDataRepository;
-import com.nex3z.examlpes.mvp.data.repository.datasource.MovieDataStoreFactory;
-import com.nex3z.examlpes.mvp.data.rest.RestClient;
-import com.nex3z.examlpes.mvp.domain.executor.PostExecutionThread;
-import com.nex3z.examlpes.mvp.domain.executor.ThreadExecutor;
-import com.nex3z.examlpes.mvp.domain.interactor.GetMovieList;
-import com.nex3z.examlpes.mvp.presentation.UIThread;
 import com.nex3z.examlpes.mvp.presentation.internal.component.MovieComponent;
-import com.nex3z.examlpes.mvp.presentation.mapper.MovieModelDataMapper;
 import com.nex3z.examlpes.mvp.presentation.model.MovieModel;
 import com.nex3z.examlpes.mvp.presentation.presenter.MovieListPresenter;
 import com.nex3z.examlpes.mvp.presentation.view.MovieListView;
@@ -81,14 +71,11 @@ public class MainActivityFragment extends BaseFragment implements MovieListView 
 
         setupRecyclerView(mRecyclerView);
 
-        mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (mOnScrollListener != null) {
-                    mOnScrollListener.reset();
-                }
-                fetchInitialMovies();
+        mSwipeLayout.setOnRefreshListener(() -> {
+            if (mOnScrollListener != null) {
+                mOnScrollListener.reset();
             }
+            fetchInitialMovies();
         });
 
         fetchInitialMovies();

@@ -17,7 +17,6 @@ public class MainActivity extends BaseActivity implements HasComponent<MovieComp
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private MovieComponent mMovieComponent;
-    private MovieListView mMovieListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +27,6 @@ public class MainActivity extends BaseActivity implements HasComponent<MovieComp
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        mMovieListView = (MovieListView) getSupportFragmentManager().findFragmentById(R.id.fragment);
-        Log.v(LOG_TAG, "onCreate(): mMovieListView = " + mMovieListView);
-
     }
 
     @Override
