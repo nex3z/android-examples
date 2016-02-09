@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Prevent Screenshot</string>
+    <string name="take_screenshot">Take Screenshot Internally</string>
+</resources>
