@@ -10,19 +10,28 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.nex3z.examples.barcode.MainActivity">
 
-    <Button
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/scan"
-        android:id="@+id/btn_scan" />
+        android:layout_marginTop="32dp"
+        android:layout_gravity="center"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/result" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:layout_gravity="center"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/txt_result"
         tools:text="0123456789012"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/scan"
+        android:id="@+id/btn_scan" />
 
 </LinearLayout>
