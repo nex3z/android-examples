@@ -32,6 +32,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:text="@string/copy"
+        android:id="@+id/btn_copy" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="@string/scan"
         android:id="@+id/btn_scan" />
 
