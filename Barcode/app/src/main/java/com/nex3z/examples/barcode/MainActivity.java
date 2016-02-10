@@ -37,8 +37,7 @@ public class MainActivity extends AppCompatActivity {
         mBtnScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ScanActivity.class);
-                startActivityForResult(intent, SCAN_REQUEST_REQUEST);
+                startScanner();
             }
         });
 
@@ -58,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mTxtResult = (TextView) findViewById(R.id.txt_result);
+
+        startScanner();
     }
 
     @Override
@@ -68,6 +69,11 @@ public class MainActivity extends AppCompatActivity {
                 mTxtResult.setText(mResult);
             }
         }
+    }
+
+    private void startScanner() {
+        Intent intent = new Intent(MainActivity.this, ScanActivity.class);
+        startActivityForResult(intent, SCAN_REQUEST_REQUEST);
     }
 
 }
