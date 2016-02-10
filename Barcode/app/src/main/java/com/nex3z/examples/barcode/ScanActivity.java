@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.zxing.Result;
@@ -39,6 +42,33 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
     public void onPause() {
         super.onPause();
         mScannerView.stopCamera();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.scan_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_flash:
+                if (mScannerView != null) {
+                    boolean isFlashOn = mScannerView.getFlash();
+                    if (isFlashOn) {
+                        mScannerView.setFlash(false);
+                        item.setIcon(R.drawable.ic_flash_on_white_24dp);
+                    } else {
+                        mScannerView.setFlash(true);
+                        item.setIcon(R.drawable.ic_flash_off_white_24dp);
+                    }
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
