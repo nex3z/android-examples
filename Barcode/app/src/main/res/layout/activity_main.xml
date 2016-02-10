@@ -25,6 +25,7 @@
         android:layout_gravity="center"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/txt_result"
+        android:textIsSelectable="true"
         tools:text="0123456789012"/>
 
     <Button
