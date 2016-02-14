@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.zxing.Result;
 
@@ -27,6 +26,7 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
         super.onCreate(savedInstanceState);
 
         mScannerView = new ZXingScannerView(this);
+        mScannerView.setAutoFocus(true);
 
         setContentView(mScannerView);
     }
