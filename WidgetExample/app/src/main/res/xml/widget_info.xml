@@ -2,9 +2,9 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="110dp"
     android:minHeight="180dp"
-    android:previewImage="@drawable/static_widget_preview"
-    android:updatePeriodMillis="86400000"
-    android:initialLayout="@layout/static_widget"
+    android:previewImage="@drawable/poster_widget_preview"
+    android:updatePeriodMillis="1800000"
+    android:initialLayout="@layout/poster_widget"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen">
 </appwidget-provider>
