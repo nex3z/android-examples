@@ -58,7 +58,7 @@ public class SimpleWidgetIntentService extends IntentService {
                 Intent launchIntent = new Intent(this, MainActivity.class);
                 PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, launchIntent, 0);
 
-                RemoteViews views = new RemoteViews(getPackageName(), R.layout.poster_widget);
+                RemoteViews views = new RemoteViews(getPackageName(), R.layout.widget_poster);
                 views.setOnClickPendingIntent(R.id.widget_movie_poster, pendingIntent);
                 views.setImageViewBitmap(R.id.widget_movie_poster, poster);
 

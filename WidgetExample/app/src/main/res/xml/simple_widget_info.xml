@@ -4,7 +4,7 @@
     android:minHeight="180dp"
     android:previewImage="@drawable/poster_widget_preview"
     android:updatePeriodMillis="1800000"
-    android:initialLayout="@layout/poster_widget"
+    android:initialLayout="@layout/widget_poster"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen">
 </appwidget-provider>
