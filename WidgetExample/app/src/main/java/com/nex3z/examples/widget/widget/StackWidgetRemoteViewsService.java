@@ -12,9 +12,9 @@ import com.nex3z.examples.widget.model.Movie;
 import com.nex3z.examples.widget.rest.model.MovieResponse;
 import com.nex3z.examples.widget.rest.service.MovieService;
 import com.nex3z.examples.widget.util.ImageUtility;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.Call;
@@ -26,7 +26,6 @@ public class StackWidgetRemoteViewsService extends RemoteViewsService {
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         return new RemoteViewsFactory() {
             private List<Movie> mMovies;
-            private List<Bitmap> mBitmaps;
 
             @Override
             public void onCreate() { }
@@ -42,10 +41,8 @@ public class StackWidgetRemoteViewsService extends RemoteViewsService {
                     List<Movie> movies = response.getMovies();
                     mMovies = movies;
                     Log.v(LOG_TAG, "onDataSetChanged(): mMovies.size() = " + mMovies.size());
-                    mBitmaps = new ArrayList<>();
-                    while(mBitmaps.size() < mMovies.size()) mBitmaps.add(null);
                 } catch (IOException e) {
-                    Log.e(LOG_TAG, e.getMessage());
+                    Log.e(LOG_TAG, "ERROR: ", e);
                 }
             }
 
@@ -60,19 +57,19 @@ public class StackWidgetRemoteViewsService extends RemoteViewsService {
             @Override
             public RemoteViews getViewAt(int position) {
                 Log.v(LOG_TAG, "getViewAt(): position = " + position);
-                if (position > getCount() - 1) {
-                    return null;
-                }
+
                 RemoteViews views = new RemoteViews(getPackageName(), R.layout.widget_stack_item);
-                if (mBitmaps.get(position) == null) {
-                    Log.v(LOG_TAG, "getViewAt(): bitmap is null, downloading.");
-                    views.setImageViewResource(R.id.widget_movie_poster, R.drawable.placeholder_poster_white);
-                    String posterUrl = ImageUtility.getImageUrl(
-                            mMovies.get(position).getPosterPath());
-                    Bitmap bitmap = ImageUtility.downloadBitmap(posterUrl);
-                    mBitmaps.add(position, bitmap);
+
+                String posterPath = ImageUtility
+                        .getImageUrl(mMovies.get(position).getPosterPath());
+                try {
+                    Bitmap poster = Picasso.with(StackWidgetRemoteViewsService.this)
+                            .load(ImageUtility.getImageUrl(posterPath))
+                            .get();
+                    views.setImageViewBitmap(R.id.widget_movie_poster, poster);
+                }catch (IOException e) {
+                    Log.e(LOG_TAG, "ERROR: ", e);
                 }
-                views.setImageViewBitmap(R.id.widget_movie_poster, mBitmaps.get(position));
 
                 return views;
             }
