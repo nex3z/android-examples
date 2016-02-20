@@ -6,7 +6,6 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -19,10 +18,8 @@ import com.nex3z.examples.widget.ui.activity.MainActivity;
 import com.nex3z.examples.widget.util.ImageUtility;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
+import java.util.Random;
 
 import retrofit.Call;
 
@@ -47,17 +44,13 @@ public class SimpleWidgetIntentService extends IntentService {
         try {
             MovieResponse response = call.execute().body();
             List<Movie> movies = response.getMovies();
-            String posterPath = movies.get(0).getPosterPath();
 
-            URL posterUrl = new URL(ImageUtility.getImageUrl(posterPath));
-            Log.v(LOG_TAG, "Poster posterUrl: " + posterUrl);
-            HttpURLConnection conn = (HttpURLConnection) posterUrl.openConnection();
+            Random random = new Random();
+            int pick = random.nextInt(movies.size());
+            Log.v(LOG_TAG, "onHandleIntent(): pick = " + pick);
 
-            conn.connect();
-            InputStream in = conn.getInputStream();
-
-            Bitmap poster = BitmapFactory.decodeStream(in);
-            in.close();
+            String posterPath = movies.get(pick).getPosterPath();
+            Bitmap poster = ImageUtility.downloadBitmap(ImageUtility.getImageUrl(posterPath));
 
             for (int appWidgetId : appWidgetIds) {
                 Log.v(LOG_TAG, "onHandleIntent(): Updating appWidgetId = " + appWidgetId);
