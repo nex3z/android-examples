@@ -12,7 +12,7 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
-            android:src="@drawable/placeholder_poster"
+            android:src="@drawable/placeholder_poster_white"
             tools:src="@drawable/placeholder_poster" />
 
 </FrameLayout>

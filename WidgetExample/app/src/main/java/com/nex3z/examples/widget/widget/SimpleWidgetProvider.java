@@ -11,8 +11,10 @@ public class SimpleWidgetProvider extends AppWidgetProvider {
     private static final String LOG_TAG = SimpleWidgetProvider.class.getSimpleName();
     private static int count = 0;
 
+    @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         Log.v(LOG_TAG, "onUpdate(): count = " + (++count));
         context.startService(new Intent(context, SimpleWidgetIntentService.class));
     }
+
 }

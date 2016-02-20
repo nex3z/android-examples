@@ -16,6 +16,7 @@ import com.nex3z.examples.widget.rest.model.MovieResponse;
 import com.nex3z.examples.widget.rest.service.MovieService;
 import com.nex3z.examples.widget.ui.activity.MainActivity;
 import com.nex3z.examples.widget.util.ImageUtility;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.List;
@@ -43,29 +44,35 @@ public class SimpleWidgetIntentService extends IntentService {
 
         try {
             MovieResponse response = call.execute().body();
-            List<Movie> movies = response.getMovies();
+            if (response != null) {
+                List<Movie> movies = response.getMovies();
 
-            Random random = new Random();
-            int pick = random.nextInt(movies.size());
-            Log.v(LOG_TAG, "onHandleIntent(): pick = " + pick);
+                Random random = new Random();
+                int base = random.nextInt(movies.size());
+                Log.v(LOG_TAG, "onHandleIntent(): base = " + base);
 
-            String posterPath = movies.get(pick).getPosterPath();
-            Bitmap poster = ImageUtility.downloadBitmap(ImageUtility.getImageUrl(posterPath));
+                int widgetCount = 0;
+                for (int appWidgetId : appWidgetIds) {
+                    Log.v(LOG_TAG, "onHandleIntent(): Updating appWidgetId = " + appWidgetId);
 
-            for (int appWidgetId : appWidgetIds) {
-                Log.v(LOG_TAG, "onHandleIntent(): Updating appWidgetId = " + appWidgetId);
+                    RemoteViews views = new RemoteViews(getPackageName(), R.layout.widget_poster);
 
-                Intent launchIntent = new Intent(this, MainActivity.class);
-                PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, launchIntent, 0);
+                    Intent launchIntent = new Intent(this, MainActivity.class);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, launchIntent, 0);
+                    views.setOnClickPendingIntent(R.id.widget_movie_poster, pendingIntent);
 
-                RemoteViews views = new RemoteViews(getPackageName(), R.layout.widget_poster);
-                views.setOnClickPendingIntent(R.id.widget_movie_poster, pendingIntent);
-                views.setImageViewBitmap(R.id.widget_movie_poster, poster);
+                    int pick = (base + widgetCount++) % movies.size();
+                    String posterPath = movies.get(pick).getPosterPath();
+                    Bitmap poster = Picasso.with(this)
+                            .load(ImageUtility.getImageUrl(posterPath))
+                            .get();
+                    views.setImageViewBitmap(R.id.widget_movie_poster, poster);
 
-                appWidgetManager.updateAppWidget(appWidgetId, views);
+                    appWidgetManager.updateAppWidget(appWidgetId, views);
+                }
             }
         } catch (IOException e) {
-            Log.e(LOG_TAG, e.getMessage());
+            Log.e(LOG_TAG, e.getLocalizedMessage());
         }
     }
 }
