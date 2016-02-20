@@ -72,7 +72,7 @@ public class SimpleWidgetIntentService extends IntentService {
                 }
             }
         } catch (IOException e) {
-            Log.e(LOG_TAG, e.getLocalizedMessage());
+            Log.e(LOG_TAG, "ERROR: ", e);
         }
     }
 }
