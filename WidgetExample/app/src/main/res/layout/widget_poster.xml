@@ -6,13 +6,6 @@
     android:layout_height="match_parent"
     android:padding="@dimen/widget_margin" >
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_width="200dp"
-        tools:layout_height="300dp" >
-
         <ImageView
             android:id="@+id/widget_movie_poster"
             android:layout_width="match_parent"
@@ -21,7 +14,5 @@
             android:adjustViewBounds="true"
             android:src="@drawable/placeholder_poster"
             tools:src="@drawable/placeholder_poster" />
-
-    </LinearLayout>
 
 </FrameLayout>
