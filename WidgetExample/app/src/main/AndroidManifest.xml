@@ -29,7 +29,7 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data android:name="android.appwidget.provider"
-                android:resource="@xml/widget_info" />
+                android:resource="@xml/simple_widget_info" />
         </receiver>
 
         <receiver android:name=".widget.StackWidgetProvider"
