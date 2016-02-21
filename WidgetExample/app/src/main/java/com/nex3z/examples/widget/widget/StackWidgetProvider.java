@@ -11,7 +11,6 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.nex3z.examples.widget.R;
-import com.nex3z.examples.widget.ui.activity.MainActivity;
 import com.nex3z.examples.widget.ui.activity.MovieActivity;
 
 
@@ -23,10 +22,6 @@ public class StackWidgetProvider extends AppWidgetProvider {
             Log.v(LOG_TAG, "onUpdate(): appWidgetId = " + appWidgetId);
 
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_stack);
-
-            Intent launchIntent = new Intent(context, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, launchIntent, 0);
-            views.setOnClickPendingIntent(R.id.widget_stack_container, pendingIntent);
 
             Intent intent = new Intent(context, StackWidgetRemoteViewsService.class);
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
