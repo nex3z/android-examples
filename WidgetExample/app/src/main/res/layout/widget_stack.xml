@@ -8,7 +8,7 @@
     android:padding="@dimen/widget_margin" >
 
     <StackView
-        android:id="@+id/widget_list"
+        android:id="@+id/widget_stack"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/widget_stack_item" >

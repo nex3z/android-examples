@@ -11,6 +11,7 @@ import com.nex3z.examples.widget.app.App;
 import com.nex3z.examples.widget.model.Movie;
 import com.nex3z.examples.widget.rest.model.MovieResponse;
 import com.nex3z.examples.widget.rest.service.MovieService;
+import com.nex3z.examples.widget.ui.activity.MovieActivity;
 import com.nex3z.examples.widget.util.ImageUtility;
 import com.squareup.picasso.Picasso;
 
@@ -60,16 +61,22 @@ public class StackWidgetRemoteViewsService extends RemoteViewsService {
 
                 RemoteViews views = new RemoteViews(getPackageName(), R.layout.widget_stack_item);
 
-                String posterPath = ImageUtility
+                String posterUrl = ImageUtility
                         .getImageUrl(mMovies.get(position).getPosterPath());
+                Log.v(LOG_TAG, "posterUrl = " + posterUrl);
+
                 try {
                     Bitmap poster = Picasso.with(StackWidgetRemoteViewsService.this)
-                            .load(ImageUtility.getImageUrl(posterPath))
+                            .load(posterUrl)
                             .get();
                     views.setImageViewBitmap(R.id.widget_movie_poster, poster);
                 }catch (IOException e) {
                     Log.e(LOG_TAG, "ERROR: ", e);
                 }
+
+                final Intent fillInIntent = new Intent();
+                fillInIntent.putExtra(MovieActivity.EXTRA_URL, posterUrl);
+                views.setOnClickFillInIntent(R.id.widget_stack_item, fillInIntent);
 
                 return views;
             }

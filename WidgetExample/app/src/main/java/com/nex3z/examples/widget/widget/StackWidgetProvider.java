@@ -6,11 +6,13 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.nex3z.examples.widget.R;
 import com.nex3z.examples.widget.ui.activity.MainActivity;
+import com.nex3z.examples.widget.ui.activity.MovieActivity;
 
 
 public class StackWidgetProvider extends AppWidgetProvider {
@@ -29,9 +31,15 @@ public class StackWidgetProvider extends AppWidgetProvider {
             Intent intent = new Intent(context, StackWidgetRemoteViewsService.class);
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
-            views.setRemoteAdapter(R.id.widget_list, intent);
+            views.setRemoteAdapter(R.id.widget_stack, intent);
 
-            views.setEmptyView(R.id.widget_list, R.id.widget_empty);
+            Intent clickIntentTemplate =  new Intent(context, MovieActivity.class);
+            PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
+                    .addNextIntentWithParentStack(clickIntentTemplate)
+                    .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            views.setPendingIntentTemplate(R.id.widget_stack, clickPendingIntentTemplate);
+
+            views.setEmptyView(R.id.widget_stack, R.id.widget_empty);
 
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
