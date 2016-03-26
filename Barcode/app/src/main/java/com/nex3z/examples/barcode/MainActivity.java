@@ -7,20 +7,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.zxing.Result;
-
-import me.dm7.barcodescanner.zxing.ZXingScannerView;
-
 public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    private static final int SCAN_REQUEST_REQUEST = 1;
+    private static final int SCAN_REQUEST = 1;
     private static final String CLIP_LABEL = "scan_result";
 
     private Button mBtnScan;
@@ -63,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == SCAN_REQUEST_REQUEST) {
+        if (requestCode == SCAN_REQUEST) {
             if(resultCode == Activity.RESULT_OK){
                 mResult = data.getStringExtra(ScanActivity.SCAN_RESULT);
                 mTxtResult.setText(mResult);
@@ -73,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void startScanner() {
         Intent intent = new Intent(MainActivity.this, ScanActivity.class);
-        startActivityForResult(intent, SCAN_REQUEST_REQUEST);
+        startActivityForResult(intent, SCAN_REQUEST);
     }
 
 }
