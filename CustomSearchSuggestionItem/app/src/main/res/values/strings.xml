@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">CustomSearchSuggestionItem</string>
+    <string name="action_search">Search</string>
+    <string name="search_hint">Search title and detail</string>
+    <string name="search_something">Search something.</string>
+</resources>
