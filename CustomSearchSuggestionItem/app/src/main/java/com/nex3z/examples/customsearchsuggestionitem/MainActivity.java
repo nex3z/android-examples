@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             Log.v(LOG_TAG, "handleIntent(): query = " + query);
 
             SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
-                    ScheduleSuggestionProvider.AUTHORITY, ScheduleSuggestionProvider.MODE);
+                    SimpleSearchSuggestionsProvider.AUTHORITY, SimpleSearchSuggestionsProvider.MODE);
             suggestions.saveRecentQuery(query, null);
         }
     }
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
     public Cursor getRecentSuggestions(String query, int limit) {
         Uri.Builder uriBuilder = new Uri.Builder()
                 .scheme(ContentResolver.SCHEME_CONTENT)
-                .authority(ScheduleSuggestionProvider.AUTHORITY);
+                .authority(SimpleSearchSuggestionsProvider.AUTHORITY);
 
         uriBuilder.appendPath(SearchManager.SUGGEST_URI_PATH_QUERY);
 
