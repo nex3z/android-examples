@@ -42,13 +42,12 @@ public class MainActivityFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeLayout;
     private ProgressBar mProgressBar;
-    private Spinner mSpinner;
 
     private MovieAdapter mMovieAdapter;
     private List<Movie> mMovies = new ArrayList<>();
     private EndlessRecyclerOnScrollListener mOnScrollListener;
     private Call<MovieResponse> mCall;
-    private String mSort = MovieService.SORT_BY_POPULARITY_DESC;
+    @MovieService.SortType private String mSort = MovieService.SORT_BY_POPULARITY_DESC;
 
     public MainActivityFragment() { }
 
@@ -91,28 +90,29 @@ public class MainActivityFragment extends Fragment {
     }
 
     private void setupSpinner() {
-        mSpinner = (Spinner) getActivity().findViewById(R.id.spinner);
+        Spinner spinner = (Spinner) getActivity().findViewById(R.id.spinner);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.sort_array, R.layout.spinner_item);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
 
-        mSpinner.setAdapter(adapter);
-        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.v(LOG_TAG, "onItemSelected(): position = " + position);
                 switch (position) {
-                    case 1:
+                    case 0:
                         mSort = MovieService.SORT_BY_POPULARITY_DESC;
                         break;
-                    case 2:
+                    case 1:
                         mSort = MovieService.SORT_BY_VOTE_AVERAGE_DESC;
                         break;
-                    case 3:
+                    case 2:
                         mSort = MovieService.SORT_BY_VOTE_COUNT_DESC;
                         break;
                 }
+
                 fetchInitialMovies(mSort);
             }
 
@@ -123,7 +123,7 @@ public class MainActivityFragment extends Fragment {
         });
     }
 
-    private void fetchInitialMovies(String sort) {
+    private void fetchInitialMovies(@MovieService.SortType String sort) {
         mMovies.clear();
         if (mMovieAdapter != null) {
             mMovieAdapter.notifyDataSetChanged();
@@ -133,8 +133,8 @@ public class MainActivityFragment extends Fragment {
         fetchMovies(FIRST_PAGE, sort);
     }
 
-    private void fetchMovies(int page, String sort) {
-        Log.v(LOG_TAG, "fetchMovies(): page = " + page);
+    private void fetchMovies(int page, @MovieService.SortType String sort) {
+        Log.v(LOG_TAG, "fetchMovies(): page = " + page + ", sort = " + sort);
         MovieService movieService = App.getRestClient().getMovieService();
         mCall = movieService.getMovies(sort, page);
 
