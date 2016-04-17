@@ -11,7 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.nex3z.examples.recyclerview2.R;
@@ -39,13 +42,21 @@ public class MainActivityFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeLayout;
     private ProgressBar mProgressBar;
+    private Spinner mSpinner;
 
     private MovieAdapter mMovieAdapter;
     private List<Movie> mMovies = new ArrayList<>();
     private EndlessRecyclerOnScrollListener mOnScrollListener;
     private Call<MovieResponse> mCall;
+    private String mSort = MovieService.SORT_BY_POPULARITY_DESC;
 
     public MainActivityFragment() { }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setupSpinner();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,25 +83,60 @@ public class MainActivityFragment extends Fragment {
                 if (mCall != null) {
                     mCall.cancel();
                 }
-                fetchMovies();
+                fetchInitialMovies(mSort);
             }
         });
 
-        fetchMovies();
+        fetchInitialMovies(mSort);
     }
 
-    private void fetchMovies() {
+    private void setupSpinner() {
+        mSpinner = (Spinner) getActivity().findViewById(R.id.spinner);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.sort_array, R.layout.spinner_item);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+
+        mSpinner.setAdapter(adapter);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.v(LOG_TAG, "onItemSelected(): position = " + position);
+                switch (position) {
+                    case 1:
+                        mSort = MovieService.SORT_BY_POPULARITY_DESC;
+                        break;
+                    case 2:
+                        mSort = MovieService.SORT_BY_VOTE_AVERAGE_DESC;
+                        break;
+                    case 3:
+                        mSort = MovieService.SORT_BY_VOTE_COUNT_DESC;
+                        break;
+                }
+                fetchInitialMovies(mSort);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void fetchInitialMovies(String sort) {
         mMovies.clear();
         if (mMovieAdapter != null) {
             mMovieAdapter.notifyDataSetChanged();
         }
-        fetchMovies(FIRST_PAGE);
+        mOnScrollListener.reset();
+
+        fetchMovies(FIRST_PAGE, sort);
     }
 
-    private void fetchMovies(int page) {
+    private void fetchMovies(int page, String sort) {
         Log.v(LOG_TAG, "fetchMovies(): page = " + page);
         MovieService movieService = App.getRestClient().getMovieService();
-        mCall = movieService.getMovies(MovieService.SORT_BY_POPULARITY_DESC, page);
+        mCall = movieService.getMovies(sort, page);
 
         mCall.enqueue(new Callback<MovieResponse>() {
             @Override
@@ -137,7 +183,7 @@ public class MainActivityFragment extends Fragment {
         mOnScrollListener = new EndlessRecyclerOnScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int currentPage) {
-                fetchMovies(currentPage);
+                fetchMovies(currentPage, mSort);
                 Log.v(LOG_TAG, "onLoadMore(): currentPage = " + currentPage
                         + ", mMovies.size() = " + mMovies.size());
             }

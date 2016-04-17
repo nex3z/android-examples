@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.nex3z.examples.recyclerview2.R;
+import com.nex3z.examples.recyclerview2.ui.fragment.MainActivityFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,8 +15,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.container, new MainActivityFragment())
+                .commit();
     }
 
     @Override
