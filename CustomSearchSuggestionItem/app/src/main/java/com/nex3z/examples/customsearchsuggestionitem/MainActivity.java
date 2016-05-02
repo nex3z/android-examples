@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Cursor cursor = getRecentSuggestions(newText, 10);
+                Cursor cursor = getRecentSuggestions(newText);
                 mSuggestionAdapter.swapCursor(cursor);
                 return false;
             }
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public Cursor getRecentSuggestions(String query, int limit) {
+    public Cursor getRecentSuggestions(String query) {
         Uri.Builder uriBuilder = new Uri.Builder()
                 .scheme(ContentResolver.SCHEME_CONTENT)
                 .authority(SimpleSearchSuggestionsProvider.AUTHORITY);
@@ -100,11 +100,6 @@ public class MainActivity extends AppCompatActivity {
 
         String selection = " ?";
         String[] selArgs = new String[] { query };
-
-        if (limit > 0) {
-            uriBuilder.appendQueryParameter(
-                    SearchManager.SUGGEST_PARAMETER_LIMIT, String.valueOf(limit));
-        }
 
         Uri uri = uriBuilder.build();
 
