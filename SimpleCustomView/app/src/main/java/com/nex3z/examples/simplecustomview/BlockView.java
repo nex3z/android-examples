@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 public class BlockView extends View {
@@ -18,6 +19,8 @@ public class BlockView extends View {
 
     private int mColor = DEFAULT_COLOR;
     private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private float mPreviousX;
+    private float mPreviousY;
 
     public BlockView(Context context) {
         super(context);
@@ -84,6 +87,41 @@ public class BlockView extends View {
         canvas.drawRect(paddingLeft, paddingTop, paddingLeft + width, paddingTop + height, mPaint);
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        final int MAX_ALPHA = 255;
+        float x = event.getX();
+        float y = event.getY();
+
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_MOVE: {
+                float dx = x - mPreviousX;
+                float dy = y - mPreviousY;
+                if (Math.abs(dx) >= Math.abs(dy)) {
+                    int newAlpha = Color.alpha(mColor) + (int) (dx / getWidth() * MAX_ALPHA);
+                    if (newAlpha < 0) {
+                        newAlpha = 0;
+                    } else if (newAlpha > MAX_ALPHA) {
+                        newAlpha = MAX_ALPHA;
+                    }
+                    Log.v(LOG_TAG, "onTouchEvent(): ACTION_MOVE newAlpha = " + newAlpha);
+                    mColor = Color.argb(
+                            newAlpha,
+                            Color.red(mColor), Color.green(mColor), Color.blue(mColor));
+                    setBlockColor(mColor);
+                }
+            }
+            default: {
+                break;
+            }
+        }
+
+        mPreviousX = x;
+        mPreviousY = y;
+
+        return true;
+    }
+
     public int getBlockColor() {
         return mColor;
     }
@@ -93,6 +131,5 @@ public class BlockView extends View {
         mColor = color;
         mPaint.setColor(mColor);
         invalidate();
-        requestLayout();
     }
 }
