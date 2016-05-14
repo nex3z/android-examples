@@ -102,7 +102,13 @@ public class VerticalScrollView extends ViewGroup {
             case MotionEvent.ACTION_MOVE: {
                 int dx = x - mLastX;
                 int dy = y - mLastY;
-                scrollBy(0, -dy);
+
+                if (getScrollY() - dy > 0) {
+                    scrollBy(0, -dy);
+                } else {
+                    scrollTo(0, 0);
+                }
+
                 break;
             }
             case MotionEvent.ACTION_UP: {
@@ -161,7 +167,6 @@ public class VerticalScrollView extends ViewGroup {
                 final int childHeight = childView.getMeasuredHeight();
                 mChildHeight = childHeight;
                 childView.layout(0, childTop, childView.getMeasuredWidth(), childTop + childHeight);
-                // childView.layout(0, childTop, childTop + childHeight, childView.getMeasuredHeight());
                 childTop += childHeight;
             }
         }

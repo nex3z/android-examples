@@ -1,35 +1,37 @@
 package com.nex3z.examples.simplecustomview;
 
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
+import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    private BlockView mBlock;
-    private Button mChangeColor;
+    private VerticalScrollView mContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        init();
+    }
 
-        mBlock = (BlockView) findViewById(R.id.block);
-        mChangeColor = (Button) findViewById(R.id.change_color);
+    private void init() {
+        mContainer = (VerticalScrollView) findViewById(R.id.container);
+        LayoutInflater inflater = getLayoutInflater();
+        Random rnd = new Random();
+        for (int i = 0; i < 10; ++i) {
+            ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.item, mContainer, false);
 
-        mChangeColor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Random rnd = new Random();
-                int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-                mBlock.setBlockColor(color);
-            }
-        });
+            BlockView blockView = (BlockView) layout.findViewById(R.id.block);
+            int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+            blockView.setBlockColor(color);
+
+            mContainer.addView(layout);
+        }
     }
 }
