@@ -104,7 +104,12 @@ public class VerticalScrollView extends ViewGroup {
                 int dy = y - mLastY;
 
                 if (getScrollY() - dy > 0) {
-                    scrollBy(0, -dy);
+                    int scrollLimit = getBottom() - mChildHeight;
+                    if (getScrollY() - dy < scrollLimit) {
+                        scrollBy(0, -dy);
+                    } else {
+                        scrollTo(0, scrollLimit);
+                    }
                 } else {
                     scrollTo(0, 0);
                 }
