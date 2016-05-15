@@ -146,16 +146,16 @@ public class VerticalScrollView extends ViewGroup {
             setMeasuredDimension(0, 0);
         } else if (widthSpec == MeasureSpec.AT_MOST && heightSpec == MeasureSpec.AT_MOST) {
             final View childView = getChildAt(0);
-            measuredWidth = childView.getMeasuredWidth() * childCount;
-            measuredHeight = childView.getMeasuredHeight();
+            measuredWidth = childView.getMeasuredWidth();
+            measuredHeight = childView.getMeasuredHeight() * childCount;
             setMeasuredDimension(measuredWidth, measuredHeight);
         } else if (heightSpec == MeasureSpec.AT_MOST) {
             final View childView = getChildAt(0);
-            measuredHeight = childView.getMeasuredHeight();
-            setMeasuredDimension(widthSize, childView.getMeasuredHeight());
+            measuredHeight = childView.getMeasuredHeight() * childCount;
+            setMeasuredDimension(widthSize, measuredHeight);
         } else if (widthSpec == MeasureSpec.AT_MOST) {
             final View childView = getChildAt(0);
-            measuredWidth = childView.getMeasuredWidth() * childCount;
+            measuredWidth = childView.getMeasuredWidth();
             setMeasuredDimension(measuredWidth, heightSize);
         }
     }
