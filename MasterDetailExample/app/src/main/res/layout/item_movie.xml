@@ -15,6 +15,7 @@
         android:scaleType="centerCrop"
         android:adjustViewBounds="true"
         android:transitionName="@string/detail_poster_transition_name"
+        android:visibility="invisible"
         tools:src="@drawable/placeholder_poster" />
 
     <TextView
