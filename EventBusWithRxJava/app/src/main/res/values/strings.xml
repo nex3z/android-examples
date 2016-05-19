@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">EventBusWithRxJava</string>
+    <string name="count">Count</string>
+</resources>
