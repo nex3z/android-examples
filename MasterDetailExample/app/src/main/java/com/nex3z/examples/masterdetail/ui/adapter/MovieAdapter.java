@@ -69,35 +69,39 @@ public class MovieAdapter extends  RecyclerView.Adapter<MovieAdapter.ViewHolder>
 
         @Override
         public void onSuccess() {
-            mImageView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-                @Override
-                public void onLayoutChange(View v, int left, int top, int right,
-                                           int bottom, int oldLeft, int oldTop,
-                                           int oldRight, int oldBottom) {
-                    v.removeOnLayoutChangeListener(this);
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        int cx = (mImageView.getLeft() + mImageView.getRight()) / 2;
-                        int cy = (mImageView.getTop() + mImageView.getBottom()) / 2;
-
-                        int finalRadius = Math.max(mImageView.getWidth(), mImageView.getHeight());
-
-                        Animator anim = ViewAnimationUtils.createCircularReveal(
-                                mImageView, cx, cy, 0, finalRadius);
-
-                        mImageView.setVisibility(View.VISIBLE);
-                        anim.start();
-                    } else {
-                        mImageView.setVisibility(View.VISIBLE);
-                    }
-                }
-            });
+            revealView(mImageView);
         }
 
         @Override
         public void onError() {
 
         }
+    }
+
+    private void revealView(final View view) {
+        view.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right,
+                                       int bottom, int oldLeft, int oldTop,
+                                       int oldRight, int oldBottom) {
+                v.removeOnLayoutChangeListener(this);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    int cx = (view.getLeft() + view.getRight()) / 2;
+                    int cy = (view.getTop() + view.getBottom()) / 2;
+
+                    int finalRadius = Math.max(view.getWidth(), view.getHeight());
+
+                    Animator anim = ViewAnimationUtils.createCircularReveal(
+                            view, cx, cy, 0, finalRadius);
+
+                    view.setVisibility(View.VISIBLE);
+                    anim.start();
+                } else {
+                    view.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     @Override
