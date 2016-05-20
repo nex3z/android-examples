@@ -15,4 +15,8 @@ public class EventBus {
     public Observable<Object> toObservable() {
         return mBus;
     }
+
+    public boolean hasObservers() {
+        return mBus.hasObservers();
+    }
 }
