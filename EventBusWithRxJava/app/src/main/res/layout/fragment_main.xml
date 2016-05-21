@@ -10,10 +10,21 @@
     tools:context="com.nex3z.examples.eventbuswithrxjava.MainActivity"
     tools:showIn="@layout/activity_main">
 
+    <TextView
+        android:id="@+id/tv_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:textSize="32sp"
+        tools:text="9527"/>
+
     <Button
         android:id="@+id/btn_count"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/count"/>
+
+
 
 </LinearLayout>

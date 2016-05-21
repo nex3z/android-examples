@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
@@ -18,6 +18,7 @@ public class MainActivityFragment extends Fragment {
 
     private EventBus mEventBus;
     private CompositeSubscription mSubscriptions;
+    private TextView mCountDisplay;
     private int mCount = 0;
 
     public MainActivityFragment() {}
@@ -26,6 +27,9 @@ public class MainActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+        mCountDisplay = (TextView) rootView.findViewById(R.id.tv_count);
+        mCountDisplay.setText(String.valueOf(mCount));
 
         Button button = (Button) rootView.findViewById(R.id.btn_count);
         button.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +60,8 @@ public class MainActivityFragment extends Fragment {
                     @Override
                     public void call(Object event) {
                         if (event instanceof CountEvent) {
-                            showToast(String.valueOf(((CountEvent) event).getCount()));
+                            mCount = ((CountEvent) event).getCount();
+                            updateCount(mCount);
                         }
                     }
                 }));
@@ -68,7 +73,8 @@ public class MainActivityFragment extends Fragment {
         mSubscriptions.clear();
     }
 
-    private void showToast(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    private void updateCount(int count) {
+        mCountDisplay.setText(String.valueOf(count));
     }
+
 }
