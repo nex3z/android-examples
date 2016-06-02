@@ -4,17 +4,18 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nex3z.examples.retrofit2.BuildConfig;
 import com.nex3z.examples.retrofit2.rest.service.MovieService;
-import com.squareup.okhttp.HttpUrl;
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
 import java.io.IOException;
 
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestClient {
     private static final String BASE_URL = "http://api.themoviedb.org";
@@ -23,34 +24,34 @@ public class RestClient {
     public RestClient() {
         Gson gson = new GsonBuilder().create();
 
-        OkHttpClient httpClient = new OkHttpClient();
-        httpClient.interceptors().add(
-                new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
+        OkHttpClient httpClient = new OkHttpClient.Builder()
+                .addInterceptor(
+                        new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Request original = chain.request();
+                        HttpUrl originalHttpUrl = original.url();
 
-        httpClient.interceptors().add(new Interceptor() {
-            @Override
-            public Response intercept(Interceptor.Chain chain) throws IOException {
-                Request original = chain.request();
-                HttpUrl originalHttpUrl = original.httpUrl();
+                        HttpUrl.Builder builder = originalHttpUrl.newBuilder()
+                                .addQueryParameter("api_key", BuildConfig.API_KEY);
 
-                HttpUrl.Builder builder = originalHttpUrl.newBuilder()
-                        .addQueryParameter("api_key", BuildConfig.API_KEY);
+                        Request.Builder requestBuilder = original.newBuilder()
+                                .url(builder.build())
+                                .method(original.method(), original.body());
 
-                Request.Builder requestBuilder = original.newBuilder()
-                        .url(builder.build())
-                        .method(original.method(), original.body());
-
-                Request request = requestBuilder.build();
-                return chain.proceed(request);
-            }
-        });
+                        Request request = requestBuilder.build();
+                        return chain.proceed(request);
+                    }
+                })
+                .build();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(httpClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
-
         mMovieService = retrofit.create(MovieService.class);
     }
 

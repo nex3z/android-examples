@@ -15,10 +15,9 @@ import com.nex3z.examples.retrofit2.rest.service.MovieService;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -40,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
         call.enqueue(new Callback<MovieResponse>() {
             @Override
-            public void onResponse(Response<MovieResponse> response, Retrofit retrofit) {
-                if (response.isSuccess()) {
+            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                if (response.isSuccessful()) {
                     MovieResponse movieResponse = response.body();
                     mMovies = movieResponse.getMovies();
                     Log.v(LOG_TAG, "onResponse(): mMovies size = " + mMovies.size());
@@ -52,11 +51,10 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this,
                             "Error code: " + statusCode, Toast.LENGTH_SHORT).show();
                 }
-
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<MovieResponse> call, Throwable t) {
                 Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
