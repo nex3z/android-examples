@@ -2,8 +2,8 @@ package com.nex3z.examples.retrofit2withrxandroid.rest.service;
 
 import com.nex3z.examples.retrofit2withrxandroid.rest.model.MovieResponse;
 
-import retrofit.http.GET;
-import retrofit.http.Query;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 import rx.Observable;
 
 public interface MovieService {
