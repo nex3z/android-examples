@@ -15,6 +15,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private static final long TIME_THRESHOLD = 500;
     private static final long SPEED_THRESHOLD = 200;
     private static final float FORCE_THRESHOLD = 2.0f;
+    private static final float MAX_FORCE = 6.0f;
+    private static final float ONE_G = 1.0f;
 
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
@@ -23,10 +25,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private float mLastY;
     private float mLastZ;
 
+    private ExpandableCircleView mCircle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mCircle = (ExpandableCircleView) findViewById(R.id.circle);
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -71,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             Log.v(LOG_TAG, "onSensorChanged(): x = " + x + ", y = " + y + ", z = " + z +
                     ", gF = " + force);
         }
-
+        mCircle.setFillProportion((force - ONE_G)/MAX_FORCE);
     }
 
     @Override
