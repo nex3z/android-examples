@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             Log.v(LOG_TAG, "onSensorChanged(): x = " + x + ", y = " + y + ", z = " + z +
                     ", gF = " + force);
         }
-        mCircle.setFillProportion((force - ONE_G)/MAX_FORCE);
+        mCircle.animateFill((force - ONE_G)/MAX_FORCE);
     }
 
     @Override

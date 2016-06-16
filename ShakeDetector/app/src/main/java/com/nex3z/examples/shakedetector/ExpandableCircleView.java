@@ -1,12 +1,12 @@
 package com.nex3z.examples.shakedetector;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 public class ExpandableCircleView extends View {
@@ -23,6 +23,7 @@ public class ExpandableCircleView extends View {
     private float mFillProportion = 0;
     private Paint mBorderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Paint mFillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private ObjectAnimator mFillAnimator;
 
     public ExpandableCircleView(Context context) {
         super(context);
@@ -44,10 +45,11 @@ public class ExpandableCircleView extends View {
         try {
             mBorderColor = a.getColor(
                     R.styleable.ExpandableCircleView_borderColor, DEFAULT_BORDER_COLOR);
+
             mFillColor = a.getColor(R.styleable.ExpandableCircleView_fillColor, DEFAULT_COLOR);
-            mFillProportion = a.getFloat(R.styleable.ExpandableCircleView_fillProportion, DEFAULT_FILL_PROPORTION);
-            Log.v(LOG_TAG, "ExpandableCircleView(): mBorderColor = " + mFillColor +
-                    ", mFillColor = " + mFillColor + ", mFillProportion = " + mFillProportion);
+
+            mFillProportion = a.getFloat(
+                    R.styleable.ExpandableCircleView_fillProportion, DEFAULT_FILL_PROPORTION);
         } finally {
             a.recycle();
         }
@@ -59,6 +61,8 @@ public class ExpandableCircleView extends View {
         mBorderPaint.setColor(mBorderColor);
         mBorderPaint.setStyle(Paint.Style.STROKE);
         mFillPaint.setColor(mFillColor);
+
+        mFillAnimator = ObjectAnimator.ofFloat(this, "FillProportion", 0);
     }
 
     @Override
@@ -99,11 +103,19 @@ public class ExpandableCircleView extends View {
         canvas.drawCircle(cx, cy, borderRadius * mFillProportion, mFillPaint);
     }
 
+    public void animateFill(float proportion) {
+        if (mFillAnimator.isRunning()) {
+            mFillAnimator.cancel();
+        }
+        mFillAnimator.setFloatValues(proportion);
+        mFillAnimator.setDuration(100).start();
+    }
+
     public float getFillProportion() {
         return mFillProportion;
     }
 
-    public void setFillProportion(float proportion) {
+    public void setFillProportion(final float proportion) {
         mFillProportion = proportion;
         invalidate();
     }
