@@ -10,20 +10,20 @@ import android.util.AttributeSet;
 import android.view.View;
 
 public class ExpandableCircleView extends View {
-    private static final String LOG_TAG = ExpandableCircleView.class.getSimpleName();
 
-    private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
-    private static final int DEFAULT_COLOR = Color.BLUE;
+    private static final int DEFAULT_OUTER_COLOR = Color.BLACK;
+    private static final int DEFAULT_INNER_COLOR = Color.BLUE;
     private static final int DEFAULT_HEIGHT = 200;
     private static final int DEFAULT_WIDTH = 200;
-    private static final float DEFAULT_FILL_PROPORTION = 0.5f;
+    private static final int DEFAULT_EXPAND_ANIMATION_DURATION = 100;
+    private static final float DEFAULT_PROGRESS = 0.5f;
 
-    private int mBorderColor = DEFAULT_BORDER_COLOR;
-    private int mFillColor = DEFAULT_COLOR;
-    private float mFillProportion = 0;
-    private Paint mBorderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private Paint mFillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private ObjectAnimator mFillAnimator;
+    private int mOuterColor = DEFAULT_OUTER_COLOR;
+    private int mInnerColor = DEFAULT_INNER_COLOR;
+    private float mProgress = 0;
+    private Paint mOuterPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private Paint mInnerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private ObjectAnimator mExpandAnimator;
 
     public ExpandableCircleView(Context context) {
         super(context);
@@ -37,19 +37,18 @@ public class ExpandableCircleView extends View {
 
     public ExpandableCircleView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
                 R.styleable.ExpandableCircleView,
                 0, 0);
 
         try {
-            mBorderColor = a.getColor(
-                    R.styleable.ExpandableCircleView_borderColor, DEFAULT_BORDER_COLOR);
-
-            mFillColor = a.getColor(R.styleable.ExpandableCircleView_fillColor, DEFAULT_COLOR);
-
-            mFillProportion = a.getFloat(
-                    R.styleable.ExpandableCircleView_fillProportion, DEFAULT_FILL_PROPORTION);
+            mOuterColor = a.getColor(R.styleable.ExpandableCircleView_outerColor,
+                    DEFAULT_OUTER_COLOR);
+            mInnerColor = a.getColor(R.styleable.ExpandableCircleView_innerColor,
+                    DEFAULT_INNER_COLOR);
+            mProgress = a.getFloat(R.styleable.ExpandableCircleView_progress, DEFAULT_PROGRESS);
         } finally {
             a.recycle();
         }
@@ -58,11 +57,11 @@ public class ExpandableCircleView extends View {
     }
 
     private void init() {
-        mBorderPaint.setColor(mBorderColor);
-        mBorderPaint.setStyle(Paint.Style.STROKE);
-        mFillPaint.setColor(mFillColor);
+        mOuterPaint.setColor(mOuterColor);
+        mOuterPaint.setStyle(Paint.Style.STROKE);
+        mInnerPaint.setColor(mInnerColor);
 
-        mFillAnimator = ObjectAnimator.ofFloat(this, "FillProportion", 0);
+        mExpandAnimator = ObjectAnimator.ofFloat(this, "Progress", 0);
     }
 
     @Override
@@ -87,37 +86,55 @@ public class ExpandableCircleView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        final int paddingLeft = getPaddingLeft();
-        final int paddingRight = getPaddingRight();
-        final int paddingTop = getPaddingTop();
-        final int paddingBottom = getPaddingBottom();
+        int paddingLeft = getPaddingLeft();
+        int paddingRight = getPaddingRight();
+        int paddingTop = getPaddingTop();
+        int paddingBottom = getPaddingBottom();
 
         int width = getWidth() - paddingLeft - paddingRight;
         int height = getHeight() - paddingTop - paddingBottom;
 
         float borderRadius = (width < height ? width : height) / 2;
-
         float cx = paddingLeft + borderRadius;
         float cy = paddingTop + borderRadius;
-        canvas.drawCircle(cx, cy, borderRadius, mBorderPaint);
-        canvas.drawCircle(cx, cy, borderRadius * mFillProportion, mFillPaint);
+
+        canvas.drawCircle(cx, cy, borderRadius, mOuterPaint);
+        canvas.drawCircle(cx, cy, borderRadius * mProgress, mInnerPaint);
     }
 
-    public void animateFill(float proportion) {
-        if (mFillAnimator.isRunning()) {
-            mFillAnimator.cancel();
+    public void expand(float progress) {
+        if (mExpandAnimator.isRunning()) {
+            mExpandAnimator.cancel();
         }
-        mFillAnimator.setFloatValues(proportion);
-        mFillAnimator.setDuration(100).start();
+        mExpandAnimator.setFloatValues(progress);
+        mExpandAnimator.setDuration(DEFAULT_EXPAND_ANIMATION_DURATION).start();
     }
 
-    public float getFillProportion() {
-        return mFillProportion;
+    public float getProgress() {
+        return mProgress;
     }
 
-    public void setFillProportion(final float proportion) {
-        mFillProportion = proportion;
+    public void setProgress(float progress) {
+        mProgress = progress;
         invalidate();
+    }
+
+    public int getOuterColor() {
+        return mOuterColor;
+    }
+
+    public void setOuterColor(int color) {
+        mOuterColor = color;
+        mOuterPaint.setColor(mOuterColor);
+    }
+
+    public int getInnerColor() {
+        return mOuterColor;
+    }
+
+    public void setInnerColor(int color) {
+        mInnerColor = color;
+        mInnerPaint.setColor(mInnerColor);
     }
 
 }

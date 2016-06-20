@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="ExpandableCircleView">
-        <attr name="fillColor" format="color" />
-        <attr name="borderColor" format="color" />
-        <attr name="fillProportion" format="float" />
+        <attr name="innerColor" format="color" />
+        <attr name="outerColor" format="color" />
+        <attr name="progress" format="float" />
+        <attr name="expandAnimationDuration" format="float" />
     </declare-styleable>
 </resources>
