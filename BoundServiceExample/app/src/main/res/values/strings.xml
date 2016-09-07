@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Bound Service Example</string>
+    <string name="messenger_service_example">Messenger Service Example</string>
+    <string name="aidl_service_example">AIDL Service Example</string>
+    <string name="calculate">Calculate</string>
+    <string name="error">ERROR</string>
+    <string name="empty_input_error">Please input both operands.</string>
+</resources>

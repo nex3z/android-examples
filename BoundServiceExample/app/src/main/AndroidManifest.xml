@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.nex3z.boundserviceexample">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".messenger.MessengerActivity"
+                  android:label="@string/messenger_service_example">
+        </activity>
+
+        <service
+            android:name=".messenger.MessengerService"
+            android:process=":remote_messenger_service">
+        </service>
+
+        <activity android:name=".aidl.AidlActivity">
+        </activity>
+
+        <service
+            android:name=".aidl.AidlService"
+            android:process=":remote_aidl_service">
+        </service>
+
+    </application>
+
+</manifest>
