@@ -14,7 +14,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestClient {
@@ -50,7 +49,6 @@ public class RestClient {
                 .baseUrl(BASE_URL)
                 .client(httpClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
         mMovieService = retrofit.create(MovieService.class);
     }
