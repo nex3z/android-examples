@@ -3,7 +3,13 @@
     <declare-styleable name="ExpandableCircleView">
         <attr name="innerColor" format="color" />
         <attr name="outerColor" format="color" />
-        <attr name="progress" format="float" />
-        <attr name="expandAnimationDuration" format="float" />
+
+        <attr name="max" format="integer" />
+        <attr name="expandAnimationDuration" format="integer" />
+
+        <attr name="showProgressText" format="boolean" />
+        <attr name="progressTextSize" format="dimension"/>
+        <attr name="progressTextColor" format="color"/>
+        <attr name="progressTextSuffix" format="string"/>
     </declare-styleable>
 </resources>
