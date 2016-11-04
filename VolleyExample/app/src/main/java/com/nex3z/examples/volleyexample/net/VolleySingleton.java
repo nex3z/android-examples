@@ -3,6 +3,7 @@ package com.nex3z.examples.volleyexample.net;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -47,6 +48,13 @@ public class VolleySingleton {
             mRequestQueue = Volley.newRequestQueue(mContext.getApplicationContext());
         }
         return mRequestQueue;
+    }
+
+    public void cancelRequest(Object tag) {
+        if (mRequestQueue != null) {
+            Log.v("Volley", "cancelRequest()");
+            mRequestQueue.cancelAll(tag);
+        }
     }
 
     public <T> void addToRequestQueue(Request<T> req) {

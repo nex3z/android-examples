@@ -22,6 +22,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
+    private static final String TAG_FETCH_MOVIES = "tag_fetch_movies";
+
     private RecyclerView mRecyclerView;
     private MovieAdapter mMovieAdapter;
     private List<Movie> mMovies = new ArrayList<>();
@@ -63,6 +65,13 @@ public class MainActivity extends AppCompatActivity {
                         Log.v(LOG_TAG, "onErrorResponse(): error = " + error);
                     }
         });
+        request.setTag(TAG_FETCH_MOVIES);
         VolleySingleton.getInstance(this).addToRequestQueue(request);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        VolleySingleton.getInstance(this).cancelRequest(TAG_FETCH_MOVIES);
     }
 }
