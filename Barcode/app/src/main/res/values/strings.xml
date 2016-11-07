@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Barcode</string>
+    <string name="zxing_scanner_view">ZXingScannerView</string>
+    <string name="zxing_android_embedded">ZXing Android Embedded</string>
     <string name="scan">Scan</string>
     <string name="copy">Copy</string>
     <string name="result">Result: </string>

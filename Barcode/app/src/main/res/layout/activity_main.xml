@@ -10,6 +10,20 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.nex3z.examples.barcode.MainActivity">
 
+    <Button
+        android:id="@+id/btn_zxing_scanner_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/zxing_scanner_view"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/btn_zxing_android_embedded"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/zxing_android_embedded"
+        android:textAllCaps="false"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,12 +48,5 @@
         android:layout_marginTop="32dp"
         android:text="@string/copy"
         android:id="@+id/btn_copy" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/scan"
-        android:id="@+id/btn_scan" />
 
 </LinearLayout>

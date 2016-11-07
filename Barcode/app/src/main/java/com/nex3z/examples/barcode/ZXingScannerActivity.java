@@ -13,8 +13,8 @@ import com.google.zxing.Result;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-public class ScanActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
-    private static final String LOG_TAG = ScanActivity.class.getSimpleName();
+public class ZXingScannerActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
+    private static final String LOG_TAG = ZXingScannerActivity.class.getSimpleName();
 
     static final String SCAN_RESULT = "scan_result";
     static final String SCAN_FORMAT = "scan_format";
