@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">PopupExample</string>
+    <string name="show_popup_window">Show PopupWindow</string>
+    <string name="show_alert_dialog">Show AlertDialog</string>
+</resources>
