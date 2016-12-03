@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">PopupExample</string>
-    <string name="show_popup_window">Show PopupWindow</string>
+    <string name="show_popup_window_demo">PopupWindow Demo</string>
+    <string name="show_alert_dialog_demo">AlertDialog Demo</string>
+    <string name="show_dim_by_window_manager">Dim by WindowManager</string>
+    <string name="show_dim_by_view_group_overlay">Dim by ViewGroupOverlay</string>
+    <string name="show_dim_by_drawable">Dim by Drawable</string>
     <string name="show_alert_dialog">Show AlertDialog</string>
 </resources>

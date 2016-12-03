@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
+    android:id="@+id/activity_alert_dialog_demo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,20 +9,13 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.nex3z.examples.popupexample.MainActivity">
+    tools:context="com.nex3z.examples.popupexample.AlertDialogDemoActivity">
 
     <Button
-        android:id="@+id/btn_show_popup_window_demo"
+        android:id="@+id/btn_show_alert_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/show_popup_window_demo"
-        android:textAllCaps="false"/>
-
-    <Button
-        android:id="@+id/btn_show_alert_dialog_demo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/show_alert_dialog_demo"
+        android:text="@string/show_alert_dialog"
         android:textAllCaps="false"/>
 
 </LinearLayout>
