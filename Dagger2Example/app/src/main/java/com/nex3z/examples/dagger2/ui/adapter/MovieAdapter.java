@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MovieAdapter extends  RecyclerView.Adapter<MovieAdapter.ViewHolder> {
@@ -34,8 +34,7 @@ public class MovieAdapter extends  RecyclerView.Adapter<MovieAdapter.ViewHolder>
 
         View contactView = inflater.inflate(R.layout.item_movie, parent, false);
 
-        ViewHolder viewHolder = new ViewHolder(contactView);
-        return viewHolder;
+        return new ViewHolder(contactView);
     }
 
     @Override
@@ -59,8 +58,8 @@ public class MovieAdapter extends  RecyclerView.Adapter<MovieAdapter.ViewHolder>
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.movie_poster) ImageView mPoster;
-        @Bind(R.id.movie_title) TextView mTitle;
+        @BindView(R.id.movie_poster) ImageView mPoster;
+        @BindView(R.id.movie_title) TextView mTitle;
 
         public ViewHolder(View itemView) {
             super(itemView);

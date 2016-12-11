@@ -12,7 +12,7 @@ import com.nex3z.examples.dagger2.internal.component.DaggerRestComponent;
 import com.nex3z.examples.dagger2.internal.component.RestComponent;
 import com.nex3z.examples.dagger2.internal.module.RestModule;
 
-public class MainActivity extends BaseActivity implements HasComponent<RestComponent> {
+public class MovieGridActivity extends BaseActivity implements HasComponent<RestComponent> {
 
     private static final String BASE_URL = "http://api.themoviedb.org";
 
@@ -21,7 +21,7 @@ public class MainActivity extends BaseActivity implements HasComponent<RestCompo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_movie_grid);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

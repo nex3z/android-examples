@@ -2,9 +2,9 @@ package com.nex3z.examples.dagger2.rest.service;
 
 import com.nex3z.examples.dagger2.rest.model.MovieResponse;
 
-import retrofit.Call;
-import retrofit.http.GET;
-import retrofit.http.Query;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 public interface MovieService {
 

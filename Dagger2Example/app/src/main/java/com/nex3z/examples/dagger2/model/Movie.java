@@ -43,7 +43,7 @@ public class Movie {
 
     @Override
     public String toString() {
-        return title + ", " + releaseDate + ", " + voteAverage;
+        return "Movie[" + title + ", " + releaseDate + ", " + voteAverage + "]";
     }
 
     public boolean isAdult() {

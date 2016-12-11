@@ -7,20 +7,20 @@ import com.google.gson.GsonBuilder;
 import com.nex3z.examples.dagger2.BuildConfig;
 import com.nex3z.examples.dagger2.internal.PerActivity;
 import com.nex3z.examples.dagger2.rest.service.MovieService;
-import com.squareup.okhttp.Cache;
-import com.squareup.okhttp.HttpUrl;
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
 import java.io.IOException;
 
 import dagger.Module;
 import dagger.Provides;
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
+import okhttp3.Cache;
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class RestModule {
@@ -36,8 +36,7 @@ public class RestModule {
         return gson;
     }
 
-    @Provides
-    @PerActivity
+    @Provides @PerActivity
     Cache provideOkHttpCache(Application application) {
         int cacheSize = 10 * 1024 * 1024;
         Cache cache = new Cache(application.getCacheDir(), cacheSize);
@@ -46,31 +45,29 @@ public class RestModule {
 
     @Provides @PerActivity
     OkHttpClient provideOkHttpClient(Cache cache) {
-        OkHttpClient httpClient = new OkHttpClient();
+        OkHttpClient httpClient = new OkHttpClient.Builder()
+                .cache(cache)
+                .addInterceptor(
+                        new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
+                .addInterceptor(
+                        new Interceptor() {
+                            @Override
+                            public Response intercept(Chain chain) throws IOException {
+                                Request original = chain.request();
+                                HttpUrl originalHttpUrl = original.url();
 
-        httpClient.interceptors().add(
-                new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
+                                HttpUrl.Builder builder = originalHttpUrl.newBuilder()
+                                        .addQueryParameter("api_key", BuildConfig.API_KEY);
 
-        httpClient.interceptors().add(new Interceptor() {
-            @Override
-            public Response intercept(Interceptor.Chain chain) throws IOException {
-                Request original = chain.request();
-                HttpUrl originalHttpUrl = original.httpUrl();
+                                Request.Builder requestBuilder = original.newBuilder()
+                                        .url(builder.build())
+                                        .method(original.method(), original.body());
 
-                HttpUrl.Builder builder = originalHttpUrl.newBuilder()
-                        .addQueryParameter("api_key", BuildConfig.API_KEY);
-
-                Request.Builder requestBuilder = original.newBuilder()
-                        .url(builder.build())
-                        .method(original.method(), original.body());
-
-                Request request = requestBuilder.build();
-                return chain.proceed(request);
-            }
-        });
-
-        httpClient.setCache(cache);
-
+                                Request request = requestBuilder.build();
+                                return chain.proceed(request);
+                            }
+                        })
+                .build();
         return httpClient;
     }
 
@@ -90,5 +87,4 @@ public class RestModule {
         MovieService movieService = retrofit.create(MovieService.class);
         return movieService;
     }
-
 }

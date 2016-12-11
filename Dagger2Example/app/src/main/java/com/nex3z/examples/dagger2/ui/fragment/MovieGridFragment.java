@@ -27,37 +27,37 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import butterknife.Unbinder;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class MainActivityFragment extends BaseFragment {
-    private static final String LOG_TAG = MainActivityFragment.class.getSimpleName();
+public class MovieGridFragment extends BaseFragment {
+    private static final String LOG_TAG = MovieGridFragment.class.getSimpleName();
     private static final int FIRST_PAGE = 1;
 
     private MovieAdapter mMovieAdapter;
     private List<Movie> mMovies = new ArrayList<>();
     private EndlessRecyclerOnScrollListener mOnScrollListener;
     private Call<MovieResponse> mCall;
+    private Unbinder mUnbinder;
 
-    @Bind(R.id.movie_grid) RecyclerView mRecyclerView;
-    @Bind(R.id.swipe_container) SwipeRefreshLayout mSwipeLayout;
-    @Bind(R.id.progressbar) ProgressBar mProgressBar;
+    @BindView(R.id.movie_grid) RecyclerView mRecyclerView;
+    @BindView(R.id.swipe_container) SwipeRefreshLayout mSwipeLayout;
+    @BindView(R.id.progressbar) ProgressBar mProgressBar;
 
     @Inject MovieService mMovieService;
 
-    public MainActivityFragment() { }
+    public MovieGridFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_movie_grid, container, false);
 
-        ButterKnife.bind(this, rootView);
+        mUnbinder = ButterKnife.bind(this, rootView);
 
         return rootView;
     }
@@ -94,7 +94,7 @@ public class MainActivityFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        mUnbinder.unbind();
     }
 
     private void fetchMovies() {
@@ -110,8 +110,8 @@ public class MainActivityFragment extends BaseFragment {
         mCall = mMovieService.getMovies(MovieService.SORT_BY_POPULARITY_DESC, page);
         mCall.enqueue(new Callback<MovieResponse>() {
             @Override
-            public void onResponse(Response<MovieResponse> response, Retrofit retrofit) {
-                if (response.isSuccess()) {
+            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                if (response.isSuccessful()) {
                     MovieResponse movieResponse = response.body();
                     List<Movie> movies = movieResponse.getMovies();
                     Log.v(LOG_TAG, "onResponse(): movies size = " + movies.size());
@@ -131,7 +131,7 @@ public class MainActivityFragment extends BaseFragment {
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<MovieResponse> call, Throwable t) {
                 stopRefreshAnimate();
                 Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -140,10 +140,7 @@ public class MainActivityFragment extends BaseFragment {
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         mMovieAdapter = new MovieAdapter(mMovies);
-        SlideInBottomAnimationAdapter animationAdapter =
-                new SlideInBottomAnimationAdapter(mMovieAdapter);
-        animationAdapter.setDuration(500);
-        recyclerView.setAdapter(animationAdapter);
+        recyclerView.setAdapter(mMovieAdapter);
 
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.addItemDecoration(new SpacesItemDecoration(4, 4, 4, 4));

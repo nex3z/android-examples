@@ -12,12 +12,11 @@ public class ActivityModule {
     private final Activity mActivity;
 
     public ActivityModule(Activity activity) {
-        this.mActivity = activity;
+        mActivity = activity;
     }
 
-    @Provides
-    @PerActivity
+    @Provides @PerActivity
     Activity activity() {
-        return this.mActivity;
+        return mActivity;
     }
 }

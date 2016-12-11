@@ -5,10 +5,9 @@ import android.support.v7.widget.RecyclerView;
 
 
 public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScrollListener {
-
     public static String LOG_TAG = EndlessRecyclerOnScrollListener.class.getSimpleName();
 
-    private final int VISIBLE_THRESHOLD = 10;
+    private static final int VISIBLE_THRESHOLD = 10;
 
     private int mPreviousTotal = 0;
     private boolean mLoading = true;

@@ -2,12 +2,11 @@ package com.nex3z.examples.dagger2.app;
 
 import android.app.Application;
 
-import com.nex3z.examples.dagger2.internal.component.*;
+import com.nex3z.examples.dagger2.internal.component.AppComponent;
+import com.nex3z.examples.dagger2.internal.component.DaggerAppComponent;
 import com.nex3z.examples.dagger2.internal.module.AppModule;
 
 public class App extends Application {
-    private static final String BASE_URL = "http://api.themoviedb.org";
-
     private AppComponent mAppComponent;
 
     @Override
@@ -22,4 +21,5 @@ public class App extends Application {
     public AppComponent getAppComponent() {
         return mAppComponent;
     }
+
 }
