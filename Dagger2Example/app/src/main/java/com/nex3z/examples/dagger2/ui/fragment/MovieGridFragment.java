@@ -2,7 +2,6 @@ package com.nex3z.examples.dagger2.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -53,6 +52,12 @@ public class MovieGridFragment extends BaseFragment {
     public MovieGridFragment() {}
 
     @Override
+    protected boolean onInjectView() throws IllegalStateException {
+        getComponent(RestComponent.class).inject(this);
+        return true;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_movie_grid, container, false);
@@ -63,15 +68,8 @@ public class MovieGridFragment extends BaseFragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        getComponent(RestComponent.class).inject(this);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
+    protected void onViewInjected(Bundle savedInstanceState) {
+        super.onViewInjected(savedInstanceState);
 
         setupRecyclerView(mRecyclerView);
 

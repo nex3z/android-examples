@@ -11,6 +11,7 @@ import com.nex3z.examples.dagger2.internal.HasComponent;
 import com.nex3z.examples.dagger2.internal.component.DaggerRestComponent;
 import com.nex3z.examples.dagger2.internal.component.RestComponent;
 import com.nex3z.examples.dagger2.internal.module.RestModule;
+import com.nex3z.examples.dagger2.ui.fragment.MovieGridFragment;
 
 public class MovieGridActivity extends BaseActivity implements HasComponent<RestComponent> {
 
@@ -24,6 +25,13 @@ public class MovieGridActivity extends BaseActivity implements HasComponent<Rest
         setContentView(R.layout.activity_movie_grid);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        if (savedInstanceState == null) {
+            MovieGridFragment fragment = new MovieGridFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container, fragment)
+                    .commit();
+        }
 
         initInjector();
     }
