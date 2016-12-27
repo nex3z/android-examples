@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnCount="4"
+    tools:context="com.nex3z.examples.eventbusexample.NumberPadFragment"
+    tools:showIn="@layout/activity_main">
+
+    <android.support.v7.widget.GridLayout
+        android:id="@+id/pad"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+        app:columnCount="4">
+
+        <Button
+            android:id="@+id/btn_clear"
+            style="@style/NumberPadButton"
+            android:text="@string/btn_clear"/>
+
+        <Button
+            android:id="@+id/btn_divide"
+            style="@style/NumberPadButton"
+            android:text="@string/btn_divide"/>
+
+        <Button
+            android:id="@+id/btn_multiply"
+            style="@style/NumberPadButton"
+            android:text="@string/btn_multiply"/>
+
+        <Button
+            android:id="@+id/btn_minus"
+            style="@style/NumberPadButton"
+            android:text="@string/btn_minus"/>
+
+        <Button
+            android:id="@+id/btn_7"
+            style="@style/NumberPadButton"
+            android:text="@string/btn_7"/>
+
+        <Button
+            android:id="@+id/btn_8"
+            style="@style/NumberPadButton"
+            android:text="@string/btn_8"/>
+
+        <Button
+            android:id="@+id/btn_9"
+            style="@style/NumberPadButton"
+            android:text="@string/btn_9"/>
+
+        <Button
+            android:id="@+id/btn_plus"
+            style="@style/NumberPadButton"
+            android:text="@string/btn_plus"
+            app:layout_rowSpan="2"
+            app:layout_gravity="fill"/>
+
+        <Button
+            android:id="@+id/btn_4"
+            style="@style/NumberPadButton"
+            android:text="@string/btn_4"/>
+
+        <Button
+            android:id="@+id/btn_5"
+            style="@style/NumberPadButton"
+            android:text="@string/btn_5"/>
+
+        <Button
+            android:id="@+id/btn_6"
+            style="@style/NumberPadButton"
+            android:text="@string/btn_6"/>
+
+        <Button
+            android:id="@+id/btn_1"
+            style="@style/NumberPadButton"
+            android:text="@string/btn_1"/>
+
+        <Button
+            android:id="@+id/btn_2"
+            style="@style/NumberPadButton"
+            android:text="@string/btn_2"/>
+
+        <Button
+            android:id="@+id/btn_3"
+            style="@style/NumberPadButton"
+            android:text="@string/btn_3"/>
+
+        <Button
+            android:id="@+id/btn_equal"
+            style="@style/NumberPadButton"
+            android:text="@string/btn_equal"
+            app:layout_rowSpan="2"
+            app:layout_gravity="fill_vertical"/>
+
+        <Button
+            android:id="@+id/btn_0"
+            style="@style/NumberPadButton"
+            android:text="@string/btn_0"
+            app:layout_columnSpan="2"
+            app:layout_gravity="fill_horizontal"/>
+
+        <Button
+            android:id="@+id/btn_dot"
+            style="@style/NumberPadButton"
+            android:text="@string/btn_dot"/>
+
+    </android.support.v7.widget.GridLayout>
+
+</FrameLayout>
