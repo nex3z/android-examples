@@ -73,5 +73,5 @@ public class MainActivity extends AppCompatActivity {
             else
                 mTvText.scrollTo(0, 0);
         }
-    };
+    }
 }

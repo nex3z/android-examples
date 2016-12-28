@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="96dp"
         android:textSize="32sp"
-        android:gravity="center"
         android:scrollbars = "vertical"
         tools:text="1024"/>
 
