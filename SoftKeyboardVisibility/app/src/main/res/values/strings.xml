@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">SoftKeyboardVisibility</string>
+    <string name="keyboard_visible">Keyboard visible</string>
+    <string name="keyboard_gone">Keyboard gone</string>
+    <string name="bottom">Bottom</string>
+    <string name="hint">Call keyboard</string>
+</resources>
