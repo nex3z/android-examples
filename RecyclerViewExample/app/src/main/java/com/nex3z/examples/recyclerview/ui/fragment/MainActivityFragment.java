@@ -22,10 +22,9 @@ import com.nex3z.examples.recyclerview.ui.adapter.MovieAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivityFragment extends Fragment {
     private static final String LOG_TAG = MainActivityFragment.class.getSimpleName();
@@ -59,9 +58,10 @@ public class MainActivityFragment extends Fragment {
                 movieService.getMovies(MovieService.SORT_BY_POPULARITY_DESC);
 
         call.enqueue(new Callback<MovieResponse>() {
+
             @Override
-            public void onResponse(Response<MovieResponse> response, Retrofit retrofit) {
-                if (response.isSuccess()) {
+            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                if (response.isSuccessful()) {
                     MovieResponse movieResponse = response.body();
                     List<Movie> movies = movieResponse.getMovies();
                     Log.v(LOG_TAG, "onResponse(): movies size = " + movies.size());
@@ -77,7 +77,7 @@ public class MainActivityFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<MovieResponse> call, Throwable t) {
                 Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
