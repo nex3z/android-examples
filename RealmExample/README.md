@@ -2,7 +2,7 @@
 
 ## Description
 
-An example of using [Realm](https://github.com/realm/realm-java to store and query data.
+An example of using [Realm](https://github.com/realm/realm-java) to store and query data.
 
 ## About API key
 
