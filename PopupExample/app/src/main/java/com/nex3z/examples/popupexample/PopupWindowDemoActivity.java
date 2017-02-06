@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,6 +90,8 @@ public class PopupWindowDemoActivity extends AppCompatActivity {
         popup.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         popup.setWidth(300);
         popup.setContentView(createViewForPopupWindow(popup));
+        popup.setBackgroundDrawable(
+                new ColorDrawable(ContextCompat.getColor(this, R.color.popupBackground)));
         return popup;
     }
 
