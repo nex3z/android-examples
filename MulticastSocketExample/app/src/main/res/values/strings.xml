@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MulticastSocketExample</string>
+    <string name="broadcast">Broadcast</string>
+    <string name="result">Received %1$s from %2$s</string>
+</resources>
