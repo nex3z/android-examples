@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2196F3</color>
+    <color name="colorPrimaryDark">#1976D2</color>
+    <color name="colorAccent">#FF5252</color>
+    <color name="colorLocal">#BDBDBD</color>
+    <color name="colorRemote">#000000</color>
+    <color name="colorNumber">#9E9E9E</color>
+    <color name="colorSend">#FFF44336</color>
+    <color name="colorReceive">#FF2196F3</color>
+    <color name="colorListBg">#FFECEFF1</color>
+    <color name="colorSendHint">#FF90A4AE</color>
+</resources>

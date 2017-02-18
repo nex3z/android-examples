@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">MulticastSocketExample</string>
+    <string name="send">Send</string>
+    <string name="settings">Settings</string>
+    <string name="clear">Clear</string>
+    <string name="input_hint">Type a message</string>
+    <string name="group_ip">Group IP</string>
+    <string name="port">Port</string>
+    <string name="done">Done</string>
+    <string name="cancel">Cancel</string>
+    <string name="invalid_port">Invalid port number.</string>
+</resources>
