@@ -41,9 +41,12 @@ public class Movie {
     @SerializedName("vote_count")
     private long voteCount;
 
+    // Field synthesized by MovieTypeAdapterFactory
+    private int score;
+
     @Override
     public String toString() {
-        return title + ", " + releaseDate + ", " + voteAverage;
+        return title + ", " + releaseDate + ", " + score + "/100";
     }
 
     public boolean isAdult() {

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nex3z.examples.retrofit2.BuildConfig;
 import com.nex3z.examples.retrofit2.rest.service.MovieService;
+import com.nex3z.examples.retrofit2.rest.typeadapter.MovieTypeAdapterFactory;
 
 import java.io.IOException;
 
@@ -21,7 +22,9 @@ public class RestClient {
     private MovieService mMovieService;
 
     public RestClient() {
-        Gson gson = new GsonBuilder().create();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapterFactory(new MovieTypeAdapterFactory())
+                .create();
 
         OkHttpClient httpClient = new OkHttpClient.Builder()
                 .addInterceptor(
