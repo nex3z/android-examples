@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">GradleFlavorExample</string>
+    <string name="message">Main</string>
+</resources>

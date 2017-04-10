@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">GradleFlavorExample Pro</string>
+    <string name="message">Pro Version</string>
+</resources>
