@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">VerticalViewPager</string>
+    <string name="page">Page %1$s</string>
+</resources>

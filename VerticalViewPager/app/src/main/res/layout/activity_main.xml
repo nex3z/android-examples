@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context="com.nex3z.examples.verticalviewpager.MainActivity">
+
+    <RadioGroup
+        android:id="@+id/rg_page"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"/>
+
+    <com.nex3z.examples.verticalviewpager.VerticalViewPager
+        android:id="@+id/vp_pager"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+
+</LinearLayout>
