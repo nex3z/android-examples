@@ -1,13 +1,17 @@
 package com.nex3z.examples.verticalviewpager;
 
+import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -73,9 +77,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(
+                RadioGroup.LayoutParams.MATCH_PARENT, (int) dpToPx(40));
         for (int i = 0; i < PAGE_COUNT; i++) {
             RadioButton radioButton = new RadioButton(this);
             radioButton.setText(String.format(getString(R.string.page), String.valueOf(i)));
+            radioButton.setTextColor(ContextCompat.getColorStateList(this,
+                    R.color.selector_page_button_text));
+            radioButton.setBackgroundResource(R.drawable.selector_bg_page_button);
+            radioButton.setLayoutParams(params);
+            radioButton.setButtonDrawable(new StateListDrawable());
+            radioButton.setGravity(Gravity.CENTER);
             mRgPages.addView(radioButton);
         }
 
@@ -101,4 +113,10 @@ public class MainActivity extends AppCompatActivity {
             return mFragments.size();
         }
     }
+
+    private float dpToPx(float dp){
+        return TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+    }
+
 }
