@@ -3,15 +3,16 @@ package com.nex3z.examples.bluetoothdiscovery;
 import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.le.BluetoothLeScanner;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,8 +20,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -38,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private BtDeviceAdapter mDiscoveredAdapter;
     private BluetoothAdapter mBluetoothAdapter;
     private DiscoveryReceiver mReceiver = new DiscoveryReceiver();
+    private BluetoothSocket mSocket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,23 +140,31 @@ public class MainActivity extends AppCompatActivity {
         mDiscoveredDevices.clear();
         mDiscoveredAdapter.notifyDataSetChanged();
 
-        boolean permissionGranted = false;
+        boolean permissionGranted = true;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             permissionGranted = checkPermission();
         }
 
         Log.v(LOG_TAG, "startDiscovery(): permissionGranted = " + permissionGranted);
         if (permissionGranted) {
-            if (mBluetoothAdapter.isDiscovering()) {
-                mBluetoothAdapter.cancelDiscovery();
-            }
+            stopDiscovery();
             boolean success = mBluetoothAdapter.startDiscovery();
             Log.v(LOG_TAG, "startDiscovery(): success = " + success);
         }
     }
 
-    private void connect(BluetoothDevice device) {
+    private void stopDiscovery() {
+        if (mBluetoothAdapter != null && mBluetoothAdapter.isDiscovering()) {
+            mBluetoothAdapter.cancelDiscovery();
+        }
+    }
 
+    private void connect(BluetoothDevice device) {
+        stopDiscovery();
+        disconnect();
+        Toast.makeText(this, "Connecting..." + device.getName() + " " + device.getAddress(),
+                Toast.LENGTH_SHORT).show();
+        new ConnectTask(this).execute(device);
     }
 
     @TargetApi(23)
@@ -177,6 +190,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void disconnect() {
+        if (mSocket != null && mSocket.isConnected()) {
+            try {
+                mSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        mSocket = null;
+    }
+
+    private void onConnected(BluetoothSocket socket) {
+        if (socket == null) {
+            Toast.makeText(this, "Connect failed.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Connected.", Toast.LENGTH_SHORT).show();
+        }
+        mSocket = socket;
+    }
+
     private class DiscoveryReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -191,6 +224,64 @@ public class MainActivity extends AppCompatActivity {
                 Log.v(LOG_TAG, "onReceive(): ACTION_DISCOVERY_STARTED");
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 Log.v(LOG_TAG, "onReceive(): ACTION_DISCOVERY_FINISHED");
+            }
+        }
+    }
+
+    private static class ConnectTask extends AsyncTask<BluetoothDevice, Void, BluetoothSocket> {
+        private final UUID BLUETOOTH_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+        private WeakReference<MainActivity> mRef;
+
+        ConnectTask(MainActivity activity) {
+            mRef = new WeakReference<>(activity);
+        }
+
+        @Override
+        protected BluetoothSocket doInBackground(BluetoothDevice... bluetoothDevices) {
+            if (bluetoothDevices.length == 0) {
+                return null;
+            }
+
+            BluetoothDevice device = bluetoothDevices[0];
+            BluetoothSocket socket = null;
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                socket = device.createRfcommSocketToServiceRecord(BLUETOOTH_UUID);
+            } catch (IOException exception) {
+                Log.e(LOG_TAG, "doInBackground(): Socket's create() method failed",
+                        exception);
+                return null;
+            }
+
+            if (socket != null) {
+                Log.v(LOG_TAG, "doInBackground(): Trying to connect socket " + socket);
+                try {
+                    socket.connect();
+                    return socket;
+                } catch (IOException connectException) {
+                    Log.e(LOG_TAG, "doInBackground(): Connect failed", connectException);
+                    try {
+                        socket.close();
+                    } catch (IOException closeException) {
+                        Log.e(LOG_TAG, "doInBackground(): Could not close the client socket",
+                                closeException);
+                    }
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(BluetoothSocket socket) {
+            MainActivity activity = mRef.get();
+            if (activity != null) {
+                activity.onConnected(socket);
             }
         }
     }
