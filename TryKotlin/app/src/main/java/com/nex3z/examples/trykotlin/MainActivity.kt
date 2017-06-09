@@ -2,8 +2,8 @@ package com.nex3z.examples.trykotlin
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
-import android.widget.TextView
 import android.widget.Toast
 import com.nex3z.examples.trykotlin.data.MovieService
 import com.nex3z.examples.trykotlin.data.RestClient
@@ -13,16 +13,21 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+import kotlinx.android.synthetic.main.activity_main.*
+
 class MainActivity : AppCompatActivity() {
 
-    private val mRestClient: RestClient = RestClient()
+    private val restClient: RestClient = RestClient()
+    private val adapter: MovieAdapter = MovieAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val tvMovies = findViewById(R.id.tv_movies) as TextView
 
-        val movieService: MovieService = mRestClient.getMovieService()
+        rv_movie.adapter = adapter;
+        rv_movie.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        val movieService: MovieService = restClient.getMovieService()
         val call = movieService.discoverMovies(1, "popularity.desc")
 
         call.enqueue(object: Callback<DiscoveryMovieEntity> {
@@ -31,7 +36,10 @@ class MainActivity : AppCompatActivity() {
                     val movieResponse: DiscoveryMovieEntity? = response.body()
                     val movies: List<MovieEntity>? = movieResponse?.results
                     Log.v("MainActivity", "onResponse(): mMovies size = " + movies?.size)
-                    tvMovies.text = movies.toString()
+
+                    if (movies != null) {
+                        adapter.movies = movies
+                    }
                 } else {
                     val statusCode = response.code()
                     Toast.makeText(this@MainActivity,
