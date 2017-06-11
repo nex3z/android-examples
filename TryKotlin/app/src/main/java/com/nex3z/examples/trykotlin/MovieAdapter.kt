@@ -17,7 +17,7 @@ class MovieAdapter() : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
             notifyDataSetChanged()
         }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup?, position: Int): ViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup?, viewType: Int): ViewHolder {
         val inflater : LayoutInflater = LayoutInflater.from(viewGroup?.context);
         val itemView : View = inflater.inflate(R.layout.item_movie, viewGroup, false);
         return ViewHolder(itemView)
