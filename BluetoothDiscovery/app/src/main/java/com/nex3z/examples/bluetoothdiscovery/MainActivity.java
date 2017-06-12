@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -72,13 +73,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_ENABLE_BT && resultCode == RESULT_OK) {
-            Log.v(LOG_TAG, "onActivityResult(): Bluetooth is enabled");
+            Log.v(LOG_TAG, "onActivityResult(): Bluetooth enabled");
             discover();
-        } else if (requestCode == REQUEST_PERMISSION && resultCode == RESULT_OK) {
-            Log.v(LOG_TAG, "onActivityResult(): Permission enabled");
         }
-
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_PERMISSION && grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Log.v(LOG_TAG, "onActivityResult(): Permission granted");
+            startDiscovery();
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private void init() {
