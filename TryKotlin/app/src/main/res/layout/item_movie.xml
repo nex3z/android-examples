@@ -2,9 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="300dp"
     android:orientation="vertical"
     android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/iv_poster"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/tv_name"
@@ -12,14 +19,8 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:textColor="@android:color/black"
+        android:lines="2"
+        android:ellipsize="end"
         tools:text="Pirates of the Caribbean: Dead Men Tell No Tales" />
-
-    <TextView
-        android:id="@+id/tv_overview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:maxLines="3"
-        android:ellipsize="end"/>
 
 </LinearLayout>
