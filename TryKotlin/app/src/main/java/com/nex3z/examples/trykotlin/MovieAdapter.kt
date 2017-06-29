@@ -24,9 +24,9 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(viewHolder: ViewHolder?, position: Int) {
         if (viewHolder == null) {
-            return;
+            return
         }
-        val movie: MovieEntity = movies[position];
+        val movie: MovieEntity = movies[position]
         viewHolder.itemView.tv_name.text = movie.title
         if (movie.poster_path != null) {
             val url = getPosterImageUrl(movie.poster_path, "w185")
