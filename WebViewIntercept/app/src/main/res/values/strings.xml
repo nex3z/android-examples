@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">WebViewIntercept</string>
+    <string name="go">Go</string>
+    <string name="url">http://www.bing.com</string>
+</resources>
