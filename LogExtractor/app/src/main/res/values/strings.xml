@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">LogExtractor</string>
+    <string name="dump">Dump</string>
+</resources>
