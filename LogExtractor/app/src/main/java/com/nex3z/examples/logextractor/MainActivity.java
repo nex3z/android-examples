@@ -11,16 +11,14 @@ import android.widget.TextView;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-    private SimpleDateFormat mFoormatsdf = new SimpleDateFormat("MM-dd HH:mm:ss");
-    private static final String COMMAND = "logcat -d";
-
+    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+    private SimpleDateFormat mFormatter = new SimpleDateFormat("MM-dd HH:mm:ss.SSS");
 
     private Button mBtnDump;
     private TextView mTvLog;
@@ -66,34 +64,23 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(Void... voids) {
             BufferedReader reader = null;
             try {
-                Process process = Runtime.getRuntime().exec(COMMAND);
-                reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-
                 Calendar calendar = Calendar.getInstance();
                 calendar.add(Calendar.SECOND, -10);
-                calendar.set(Calendar.YEAR, 1970);
                 Date from = calendar.getTime();
+
+                Process process = Runtime.getRuntime().exec(new String[]
+                        {"logcat", "-d", "-t", mFormatter.format(from)});
+                reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
                 StringBuilder sb = new StringBuilder();
                 int lineCount = 0;
                 String line = reader.readLine();
-                boolean startSaving = false;
-
                 while (line != null && !isCancelled()) {
-                    if (!startSaving) {
-                        Date date = getDate(line);
-                        if (date != null && date.after(from)) {
-                            startSaving = true;
-                        }
-                    }
-                    if (startSaving) {
-                        sb.append(line);
-                        sb.append(System.getProperty("line.separator"));
-                        lineCount++;
-                    }
+                    sb.append(line);
+                    sb.append(LINE_SEPARATOR);
+                    lineCount++;
                     line = reader.readLine();
                 }
-
                 Log.v(LOG_TAG, "doInBackground(): Dump complete, lineCount = " + lineCount);
                 return sb.toString();
             } catch (IOException e) {
@@ -114,20 +101,6 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             mTvLog.setText(s);
             Log.v(LOG_TAG, "Dump finished");
-        }
-    }
-
-    private Date getDate(String line) {
-        int pointPos = line.indexOf('.');
-        if (pointPos != -1) {
-            String dateStr = line.substring(0, pointPos);
-            try {
-                return mFoormatsdf.parse(dateStr);
-            } catch (ParseException e) {
-                return null;
-            }
-        } else {
-            return null;
         }
     }
 }
