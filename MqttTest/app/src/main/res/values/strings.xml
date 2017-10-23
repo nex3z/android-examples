@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">MqttTest</string>
+    <string name="client_config">Client Configuration</string>
+    <string name="client_id">Client ID</string>
+    <string name="broker_address">Broker Address</string>
+    <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="subscribe_topic">Subscribe Topic</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="publish_topic">Publish Topic</string>
+    <string name="publish_qos">QoS</string>
+    <string name="publish_content">Publish Content</string>
+    <string name="publish">Publish</string>
+    <string name="default_topic" translatable="false">MqttTestTopic</string>
+    <string name="default_content">Hello World</string>
+    <string name="received">Received</string>
+    <string name="delivered">Delivered</string>
+</resources>

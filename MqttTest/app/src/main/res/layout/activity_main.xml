@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context="com.nex3z.examples.mqtttest.MainActivity">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/TextTitle"
+            android:text="@string/client_config" />
+
+        <EditText
+            android:id="@+id/et_client_id"
+            style="@style/InputTable"
+            android:hint="@string/client_id"/>
+
+        <TableRow>
+
+            <EditText
+                android:id="@+id/et_broker_address"
+                style="@style/InputTable"
+                android:hint="@string/broker_address"/>
+
+            <Button
+                android:id="@+id/btn_connect"
+                android:text="@string/connect" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <EditText
+                android:id="@+id/et_subscribe_topic"
+                style="@style/InputTable"
+                android:hint="@string/subscribe_topic"/>
+
+            <Button
+                android:id="@+id/btn_subscribe"
+                android:text="@string/subscribe"
+                android:enabled="false"/>
+
+        </TableRow>
+
+        <TextView
+            style="@style/TextTitle"
+            android:layout_marginTop="16dp"
+            android:text="@string/client_config" />
+
+        <TableRow>
+
+            <EditText
+                android:id="@+id/et_publish_topic"
+                style="@style/InputTable"
+                android:hint="@string/publish_topic"/>
+
+            <EditText
+                android:id="@+id/et_publish_qos"
+                style="@style/InputTable"
+                android:layout_weight="0"
+                android:hint="@string/publish_qos" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <EditText
+                android:id="@+id/et_publish_content"
+                style="@style/InputTable"
+                android:hint="@string/publish_content"/>
+
+            <Button
+                android:id="@+id/btn_publish"
+                android:text="@string/publish"
+                android:enabled="false"/>
+
+        </TableRow>
+
+    </TableLayout>
+
+    <TextView
+        style="@style/TextTitle"
+        android:layout_marginTop="16dp"
+        android:text="@string/received" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_received"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"/>
+
+    </ScrollView>
+
+</LinearLayout>
