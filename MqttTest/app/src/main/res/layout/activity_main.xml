@@ -7,88 +7,119 @@
     android:padding="16dp"
     tools:context="com.nex3z.examples.mqtttest.MainActivity">
 
-    <TableLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <TextView
             style="@style/TextTitle"
-            android:text="@string/client_config" />
+            android:text="@string/caption_client_config" />
 
         <EditText
             android:id="@+id/et_client_id"
-            style="@style/InputTable"
-            android:hint="@string/client_id"/>
+            android:layout_width="match_parent"
+            style="@style/Input"
+            android:hint="@string/caption_client_id"/>
 
-        <TableRow>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/et_broker_address"
-                style="@style/InputTable"
-                android:hint="@string/broker_address"/>
+                style="@style/Input"
+                android:layout_weight="1"
+                android:hint="@string/caption_broker_address"/>
 
             <Button
                 android:id="@+id/btn_connect"
-                android:text="@string/connect" />
+                style="@style/Button"
+                android:text="@string/caption_connect"/>
 
-        </TableRow>
+        </LinearLayout>
 
-        <TableRow>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/et_subscribe_topic"
-                style="@style/InputTable"
-                android:hint="@string/subscribe_topic"/>
+                style="@style/Input"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:hint="@string/caption_subscribe_topic"/>
+
+            <EditText
+                android:id="@+id/et_subscribe_qos"
+                style="@style/Input"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:inputType="number"
+                android:hint="@string/caption_publish_qos" />
 
             <Button
                 android:id="@+id/btn_subscribe"
-                android:text="@string/subscribe"
+                style="@style/Button"
+                android:text="@string/caption_subscribe"
                 android:enabled="false"/>
 
-        </TableRow>
+        </LinearLayout>
 
         <TextView
             style="@style/TextTitle"
             android:layout_marginTop="16dp"
-            android:text="@string/client_config" />
+            android:text="@string/caption_client_config" />
 
-        <TableRow>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/et_publish_topic"
-                style="@style/InputTable"
-                android:hint="@string/publish_topic"/>
+                style="@style/Input"
+                android:layout_weight="1"
+                android:hint="@string/caption_publish_topic"/>
 
             <EditText
                 android:id="@+id/et_publish_qos"
-                style="@style/InputTable"
-                android:layout_weight="0"
-                android:hint="@string/publish_qos" />
+                style="@style/Input"
+                android:inputType="number"
+                android:hint="@string/caption_publish_qos" />
 
-        </TableRow>
+        </LinearLayout>
 
-        <TableRow>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/et_publish_content"
-                style="@style/InputTable"
-                android:hint="@string/publish_content"/>
+                style="@style/Input"
+                android:layout_weight="1"
+                android:hint="@string/caption_publish_content"/>
 
             <Button
                 android:id="@+id/btn_publish"
-                android:text="@string/publish"
+                style="@style/Button"
+                android:text="@string/caption_publish"
                 android:enabled="false"/>
 
-        </TableRow>
+        </LinearLayout>
 
-    </TableLayout>
+    </LinearLayout>
 
     <TextView
         style="@style/TextTitle"
         android:layout_marginTop="16dp"
-        android:text="@string/received" />
+        android:text="@string/caption_received" />
 
     <ScrollView
+        android:id="@+id/sv_received"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

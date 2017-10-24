@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowSoftInputMode">stateHidden|adjustPan</item>
     </style>
 
     <style name="TextContent">
@@ -18,15 +19,24 @@
         <item name="android:textColor">@android:color/black</item>
     </style>
 
-    <style name="TextTable" parent="TextContent">
+    <style name="TextRow" parent="TextContent">
         <item name="android:layout_height">50dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="InputTable" parent="TextTable">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">1</item>
+    <style name="Button" parent="TextContent">
+        <item name="android:layout_width">120dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="Input" parent="TextRow">
+        <item name="android:layout_width">120dp</item>
+        <item name="android:inputType">text</item>
+        <item name="android:maxLines">1</item>
     </style>
 
 </resources>

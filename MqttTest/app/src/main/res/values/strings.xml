@@ -1,18 +1,28 @@
 <resources>
     <string name="app_name">MqttTest</string>
-    <string name="client_config">Client Configuration</string>
-    <string name="client_id">Client ID</string>
-    <string name="broker_address">Broker Address</string>
-    <string name="connect">Connect</string>
-    <string name="disconnect">Disconnect</string>
-    <string name="subscribe_topic">Subscribe Topic</string>
-    <string name="subscribe">Subscribe</string>
-    <string name="publish_topic">Publish Topic</string>
-    <string name="publish_qos">QoS</string>
-    <string name="publish_content">Publish Content</string>
-    <string name="publish">Publish</string>
-    <string name="default_topic" translatable="false">MqttTestTopic</string>
-    <string name="default_content">Hello World</string>
-    <string name="received">Received</string>
-    <string name="delivered">Delivered</string>
+    <string name="caption_client_config">Client Configuration</string>
+    <string name="caption_client_id">Client ID</string>
+    <string name="caption_broker_address">Broker Address</string>
+    <string name="caption_connect">Connect</string>
+    <string name="caption_disconnect">Disconnect</string>
+    <string name="caption_subscribe_topic">Subscribe Topic</string>
+    <string name="caption_subscribe_qos">QoS</string>
+    <string name="caption_subscribe">Subscribe</string>
+    <string name="caption_publish_topic">Publish Topic</string>
+    <string name="caption_publish_qos">QoS</string>
+    <string name="caption_publish_content">Publish Content</string>
+    <string name="caption_publish">Publish</string>
+    <string name="caption_default_topic" translatable="false">MqttTestTopic</string>
+    <string name="caption_default_content">Hello World</string>
+    <string name="caption_received">Received</string>
+    <string name="caption_delivered">Delivered</string>
+    <string name="msg_connect_success">Connect Success</string>
+    <string name="msg_connect_failed">Connect Failed</string>
+    <string name="msg_disconnect_success">Disconnect Success</string>
+    <string name="msg_disconnect_failed">Disconnect Failed</string>
+    <string name="msg_subscribe_success">Subscribe Success</string>
+    <string name="msg_subscribe_failed">Subscribe Failed</string>
+    <string name="msg_publish_success">Publish Success</string>
+    <string name="msg_publish_failed">Publish Failed</string>
+    <string name="msg_delivered">Delivered</string>
 </resources>
