@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">DownloadAndInstallApk</string>
+    <string name="input_url">Input URL</string>
+    <string name="download">Download</string>
+</resources>
