@@ -29,18 +29,13 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
         val movie: MovieEntity = movies[position]
         viewHolder.itemView.tv_name.text = movie.title
         if (movie.poster_path != null) {
-            val url = getPosterImageUrl(movie.poster_path, "w185")
+            val url = movie.getPosterImageUrl(MovieEntity.PosterSize.W185)
             Picasso.with(viewHolder.itemView.context).load(url).into(viewHolder.itemView.iv_poster)
         }
     }
 
     override fun getItemCount(): Int {
         return movies.size
-    }
-
-    fun getPosterImageUrl(path: String, size: String): String {
-        val BASE_URL = "http://image.tmdb.org/t/p/"
-        return BASE_URL + size + "/" + path
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

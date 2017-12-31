@@ -23,8 +23,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        rv_movie.adapter = adapter
-        rv_movie.layoutManager = GridLayoutManager(this, 2)
+        with (rv_movie) {
+            adapter = this@MainActivity.adapter
+            layoutManager = GridLayoutManager(this@MainActivity, 2)
+        }
 
         val movieService: MovieService = restClient.getMovieService()
         val call = movieService.discoverMovies(1, "popularity.desc")
