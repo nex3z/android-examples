@@ -10,6 +10,8 @@ import kotlinx.android.synthetic.main.item_movie.view.*
 
 class MovieAdapter : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
 
+    var onItemClickListener: ((MovieEntity) -> Unit)? = null
+
     var movies: List<MovieEntity> = listOf()
         set(value) {
             field = value
@@ -38,6 +40,12 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
         return movies.size
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        init {
+            itemView.setOnClickListener {
+                onItemClickListener?.invoke(movies[adapterPosition])
+            }
+        }
+    }
 
 }

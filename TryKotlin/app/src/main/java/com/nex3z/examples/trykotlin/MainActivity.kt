@@ -17,18 +17,28 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity() {
 
     private val restClient: RestClient = RestClient()
+    private val movieService: MovieService = restClient.getMovieService()
     private val adapter: MovieAdapter = MovieAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        init()
+        fetchMovies()
+    }
+
+    private fun init() {
+        adapter.onItemClickListener = { movie ->
+            Toast.makeText(this, movie.title, Toast.LENGTH_SHORT).show()
+        }
 
         with (rv_movie) {
             adapter = this@MainActivity.adapter
             layoutManager = GridLayoutManager(this@MainActivity, 2)
         }
+    }
 
-        val movieService: MovieService = restClient.getMovieService()
+    private fun fetchMovies() {
         val call = movieService.discoverMovies(1, "popularity.desc")
 
         call.enqueue(object: Callback<DiscoveryMovieEntity> {
@@ -53,6 +63,6 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity, t.message, Toast.LENGTH_SHORT).show()
             }
         })
-
     }
+
 }
