@@ -12,7 +12,7 @@ import {
   View
 } from 'react-native';
 
-import DeviceInfo from './DeviceInfo';
+import RnDeviceInfo from './RnDeviceInfo';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -25,10 +25,10 @@ export default class App extends Component<{}> {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>System: {DeviceInfo.system}</Text>
-        <Text style={styles.text}>System Version: {DeviceInfo.systemVersion}</Text>
-        <Text style={styles.text}>Language: {DeviceInfo.language}</Text>
-        <Text style={styles.text}>App Version: {DeviceInfo.appVersion}</Text>
+        <Text style={styles.text}>System: {RnDeviceInfo.system}</Text>
+        <Text style={styles.text}>System Version: {RnDeviceInfo.systemVersion}</Text>
+        <Text style={styles.text}>Language: {RnDeviceInfo.language}</Text>
+        <Text style={styles.text}>App Version: {RnDeviceInfo.appVersion}</Text>
       </View>
     );
   }
