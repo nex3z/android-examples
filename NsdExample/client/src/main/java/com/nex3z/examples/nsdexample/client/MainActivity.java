@@ -10,11 +10,11 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String SERVICE_TYPE = "_http._tcp.";
-    private static final String SERVICE_NAME = "NdsDemo";
+    private static final String SERVICE_NAME = "NsdDemo";
 
     private TextView mTvStatus;
     private NsdManager mNsdManager;
-    private NsdManager.DiscoveryListener mDiscoveryListener;
+    private NsdManager.DiscoveryListener mDiscoveryListener = new DiscoveryListener();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,69 +39,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void init() {
         mNsdManager = (NsdManager) getSystemService(NSD_SERVICE);
-
-        mDiscoveryListener = new NsdManager.DiscoveryListener() {
-            @Override
-            public void onStartDiscoveryFailed(String serviceType, int errorCode) {
-                Log.v(LOG_TAG, "onStartDiscoveryFailed(): serviceType = " + serviceType
-                        + ", errorCode = " + errorCode);
-                showMessage("onStartDiscoveryFailed(): serviceType = " + serviceType
-                        + ", errorCode = " + errorCode);
-            }
-
-            @Override
-            public void onStopDiscoveryFailed(String serviceType, int errorCode) {
-                Log.v(LOG_TAG, "onStopDiscoveryFailed(): serviceType = " + serviceType
-                        + ", errorCode = " + errorCode);
-                showMessage("onStopDiscoveryFailed(): serviceType = " + serviceType
-                        + ", errorCode = " + errorCode);
-            }
-
-            @Override
-            public void onDiscoveryStarted(String serviceType) {
-                Log.v(LOG_TAG, "onDiscoveryStarted(): serviceType = " + serviceType);
-                showMessage("onDiscoveryStarted(): serviceType = " + serviceType);
-            }
-
-            @Override
-            public void onDiscoveryStopped(String serviceType) {
-                Log.v(LOG_TAG, "onDiscoveryStopped(): serviceType = " + serviceType);
-                showMessage("onDiscoveryStopped(): serviceType = " + serviceType);
-            }
-
-            @Override
-            public void onServiceFound(NsdServiceInfo serviceInfo) {
-                Log.v(LOG_TAG, "onServiceFound(): serviceInfo = " + serviceInfo);
-                showMessage("Service Found: serviceInfo = " + serviceInfo);
-
-                if (serviceInfo.getServiceType().startsWith(SERVICE_TYPE)
-                        && serviceInfo.getServiceName().startsWith(SERVICE_NAME)) {
-                    Log.v(LOG_TAG, "onServiceFound(): Service found.");
-                    showMessage("Service found!");
-
-                    mNsdManager.resolveService(serviceInfo, new NsdManager.ResolveListener() {
-                        @Override
-                        public void onResolveFailed(NsdServiceInfo serviceInfo, int errorCode) {
-                            Log.v(LOG_TAG, "onResolveFailed(): serviceInfo = " + serviceInfo
-                                    + ", errorCode = " + errorCode);
-                            showMessage("Resolve Failed: serviceInfo = " + serviceInfo
-                                    + ", errorCode = " + errorCode);
-                        }
-
-                        @Override
-                        public void onServiceResolved(NsdServiceInfo serviceInfo) {
-                            Log.v(LOG_TAG, "onServiceResolved(): serviceInfo = " + serviceInfo);
-                            showMessage("Service Resolved: serviceInfo = " + serviceInfo);
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onServiceLost(NsdServiceInfo serviceInfo) {
-                Log.v(LOG_TAG, "Service Lost: serviceInfo = " + serviceInfo);
-            }
-        };
     }
 
     private void startDiscovery() {
@@ -119,5 +56,69 @@ public class MainActivity extends AppCompatActivity {
                 mTvStatus.append(message + "\n");
             }
         });
+    }
+
+    private class DiscoveryListener implements NsdManager.DiscoveryListener {
+        @Override
+        public void onStartDiscoveryFailed(String serviceType, int errorCode) {
+            Log.v(LOG_TAG, "onStartDiscoveryFailed(): serviceType = " + serviceType
+                    + ", errorCode = " + errorCode);
+            showMessage("onStartDiscoveryFailed(): serviceType = " + serviceType
+                    + ", errorCode = " + errorCode);
+        }
+
+        @Override
+        public void onStopDiscoveryFailed(String serviceType, int errorCode) {
+            Log.v(LOG_TAG, "onStopDiscoveryFailed(): serviceType = " + serviceType
+                    + ", errorCode = " + errorCode);
+            showMessage("onStopDiscoveryFailed(): serviceType = " + serviceType
+                    + ", errorCode = " + errorCode);
+        }
+
+        @Override
+        public void onDiscoveryStarted(String serviceType) {
+            Log.v(LOG_TAG, "onDiscoveryStarted(): serviceType = " + serviceType);
+            showMessage("onDiscoveryStarted(): serviceType = " + serviceType);
+        }
+
+        @Override
+        public void onDiscoveryStopped(String serviceType) {
+            Log.v(LOG_TAG, "onDiscoveryStopped(): serviceType = " + serviceType);
+            showMessage("onDiscoveryStopped(): serviceType = " + serviceType);
+        }
+
+        @Override
+        public void onServiceFound(NsdServiceInfo serviceInfo) {
+            Log.v(LOG_TAG, "onServiceFound(): serviceInfo = " + serviceInfo);
+            showMessage("Service Found: serviceInfo = " + serviceInfo);
+
+            if (serviceInfo.getServiceType().startsWith(SERVICE_TYPE)
+                    && serviceInfo.getServiceName().startsWith(SERVICE_NAME)) {
+                Log.v(LOG_TAG, "onServiceFound(): Service found.");
+                showMessage("Service found!");
+                mNsdManager.resolveService(serviceInfo, new ResolveListener());
+            }
+        }
+
+        @Override
+        public void onServiceLost(NsdServiceInfo serviceInfo) {
+            Log.v(LOG_TAG, "Service Lost: serviceInfo = " + serviceInfo);
+        }
+    }
+
+    private class ResolveListener implements NsdManager.ResolveListener {
+        @Override
+        public void onResolveFailed(NsdServiceInfo serviceInfo, int errorCode) {
+            Log.v(LOG_TAG, "onResolveFailed(): serviceInfo = " + serviceInfo
+                    + ", errorCode = " + errorCode);
+            showMessage("Resolve Failed: serviceInfo = " + serviceInfo
+                    + ", errorCode = " + errorCode);
+        }
+
+        @Override
+        public void onServiceResolved(NsdServiceInfo serviceInfo) {
+            Log.v(LOG_TAG, "onServiceResolved(): serviceInfo = " + serviceInfo);
+            showMessage("Service Resolved: serviceInfo = " + serviceInfo);
+        }
     }
 }
