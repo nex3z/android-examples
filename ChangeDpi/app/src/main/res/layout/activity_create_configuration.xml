@@ -14,6 +14,11 @@
         android:layout_marginTop="16dp"
         android:background="@color/colorPrimaryDark"/>
 
+    <TextView
+        android:id="@+id/tv_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"/>
 
     <FrameLayout
         android:id="@+id/vg_container"

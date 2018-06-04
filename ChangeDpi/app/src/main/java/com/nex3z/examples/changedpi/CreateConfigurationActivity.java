@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 
 public class CreateConfigurationActivity extends AppCompatActivity {
 
@@ -17,6 +18,9 @@ public class CreateConfigurationActivity extends AppCompatActivity {
             transaction.replace(R.id.vg_container, CreateConfigurationFragment.newInstance());
             transaction.commit();
         }
+
+        TextView tvInfo = findViewById(R.id.tv_info);
+        tvInfo.setText(DpiUtil.buildDpiInfo(this));
     }
 
     @Override
