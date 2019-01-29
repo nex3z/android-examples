@@ -1,27 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import 'package:unit_converter/unit.dart';
+
+import 'category.dart';
+import 'unit.dart';
 
 const _padding = EdgeInsets.all(16.0);
 
-class ConverterScreen extends StatefulWidget  {
-  final String name;
-  final Color color;
-  final List<Unit> units;
+class UnitConverter extends StatefulWidget {
+  final Category category;
 
-  const ConverterScreen({
-    @required this.name,
-    @required this.color,
-    @required this.units
-  }) : assert(name != null),
-        assert(color != null),
-        assert(units != null);
+  const UnitConverter({
+    @required this.category,
+  }) : assert(category != null);
 
   @override
-  State<StatefulWidget> createState() => _ConverterScreenState();
+  _UnitConverterState createState() => _UnitConverterState();
 }
 
-class _ConverterScreenState extends State<ConverterScreen> {
+class _UnitConverterState extends State<UnitConverter> {
   Unit _fromValue;
   Unit _toValue;
   double _inputValue;
@@ -31,13 +27,23 @@ class _ConverterScreenState extends State<ConverterScreen> {
 
   @override
   void initState() {
+    super.initState();
     _createDropdownMenuItems();
     _setDefaults();
   }
 
+  @override
+  void didUpdateWidget(UnitConverter old) {
+    super.didUpdateWidget(old);
+    if (old.category != widget.category) {
+      _createDropdownMenuItems();
+      _setDefaults();
+    }
+  }
+
   void _createDropdownMenuItems() {
     var newItems = <DropdownMenuItem>[];
-    for (var unit in widget.units) {
+    for (var unit in widget.category.units) {
       newItems.add(DropdownMenuItem(
         value: unit.name,
         child: Container(
@@ -55,8 +61,8 @@ class _ConverterScreenState extends State<ConverterScreen> {
 
   void _setDefaults() {
     setState(() {
-      _fromValue = widget.units[0];
-      _toValue = widget.units[1];
+      _fromValue = widget.category.units[0];
+      _toValue = widget.category.units[1];
     });
   }
 
@@ -87,6 +93,8 @@ class _ConverterScreenState extends State<ConverterScreen> {
       if (input == null || input.isEmpty) {
         _convertedValue = '';
       } else {
+        // Even though we are using the numerical keyboard, we still have to check
+        // for non-numerical input such as '5..0' or '6 -3'
         try {
           final inputDouble = double.parse(input);
           _showValidationError = false;
@@ -101,7 +109,8 @@ class _ConverterScreenState extends State<ConverterScreen> {
   }
 
   Unit _getUnit(String unitName) {
-    return widget.units.firstWhere((Unit unit) {
+    return widget.category.units.firstWhere(
+          (Unit unit) {
         return unit.name == unitName;
       },
       orElse: null,
@@ -130,6 +139,7 @@ class _ConverterScreenState extends State<ConverterScreen> {
     return Container(
       margin: EdgeInsets.only(top: 16.0),
       decoration: BoxDecoration(
+        // This sets the color of the [DropdownButton] itself
         color: Colors.grey[50],
         border: Border.all(
           color: Colors.grey[400],
@@ -138,6 +148,7 @@ class _ConverterScreenState extends State<ConverterScreen> {
       ),
       padding: EdgeInsets.symmetric(vertical: 8.0),
       child: Theme(
+        // This sets the color of the [DropdownMenuItem]
         data: Theme.of(context).copyWith(
           canvasColor: Colors.grey[50],
         ),
@@ -163,6 +174,9 @@ class _ConverterScreenState extends State<ConverterScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          // This is the widget that accepts text input. In this case, it
+          // accepts numbers and calls the onChanged property on update.
+          // You can read more about it here: https://flutter.io/text-input
           TextField(
             style: Theme.of(context).textTheme.display1,
             decoration: InputDecoration(
@@ -173,6 +187,8 @@ class _ConverterScreenState extends State<ConverterScreen> {
                 borderRadius: BorderRadius.circular(0.0),
               ),
             ),
+            // Since we only want numerical input, we use a number keyboard. There
+            // are also other keyboards for dates, emails, phone numbers, etc.
             keyboardType: TextInputType.number,
             onChanged: _updateInputValue,
           ),
@@ -227,4 +243,3 @@ class _ConverterScreenState extends State<ConverterScreen> {
     );
   }
 }
-
