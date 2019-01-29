@@ -11,26 +11,20 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Title'),
-        ),
-        body: Center(
-          child: RandomWords(),
-        ),
-      ),
+      home: HomePage(),
     );
   }
 }
 
-class RandomWords extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  RandomWordsState createState() => new RandomWordsState();
+  HomePageState createState() => new HomePageState();
 }
 
-class RandomWordsState extends State<RandomWords> {
-  final _suggestions = <WordPair>[];
-  final _biggerFont = const TextStyle(fontSize: 18.0);
+class HomePageState extends State<HomePage> {
+  final List<WordPair> _suggestions = <WordPair>[];
+  final Set<WordPair> _saved = Set<WordPair>();
+  final TextStyle _biggerFont = const TextStyle(fontSize: 18.0);
   
   Widget _buildSuggestions() {
     return ListView.builder(
@@ -46,18 +40,74 @@ class RandomWordsState extends State<RandomWords> {
     ); 
   }
 
+  void _pushSaved() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) {
+          final Iterable<ListTile> tiles = _saved.map((WordPair pair) {
+            return new ListTile(
+                title: Text(
+                  pair.asPascalCase,
+                  style: _biggerFont,
+                )
+            );
+          });
+          final List<Widget> divided = ListTile.divideTiles(
+              context: context,
+              tiles: tiles
+          ).toList();
+          return new Scaffold(
+            appBar: AppBar(
+              title: Text('Saved'),
+            ),
+            body: ListView(
+              children: divided,
+            ),
+          );
+        },
+      )
+    );
+  }
+
   Widget _buildRow(WordPair pair) {
+    final bool alreadySaved = _saved.contains(pair);
     return ListTile(
       title: Text(
         pair.asPascalCase,
         style: _biggerFont,
       ),
+      trailing: Icon(
+        alreadySaved ? Icons.favorite : Icons.favorite_border,
+        color: alreadySaved ? Colors.red : null,
+      ),
+      onTap: () {
+        setState(() {
+          if (alreadySaved) {
+            _saved.remove(pair);
+          } else {
+            _saved.add(pair);
+          }
+        });
+      },
     );
   }
   
   @override
   Widget build(BuildContext context) {
-    return _buildSuggestions();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Title'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.list),
+            onPressed: _pushSaved,
+          )
+        ],
+      ),
+      body: Center(
+        child: _buildSuggestions(),
+      ),
+    );
   }
 
 }
