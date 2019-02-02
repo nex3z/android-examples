@@ -24,13 +24,34 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final _addressController = TextEditingController(text: 'ws://echo.websocket.org');
   final _messageController = TextEditingController(text: 'Hello');
-  IOWebSocketChannel _channel = null;
+  IOWebSocketChannel _channel;
 
   void _connect() {
     var address = _addressController.text;
     print("address = $address");
     setState(() {
       _channel = IOWebSocketChannel.connect(address);
+    });
+  }
+
+  Widget _buildConnectButton() {
+    if (_channel == null) {
+      return RaisedButton(
+        child: Text('Connecct'),
+        onPressed: _connect,
+      );
+    } else {
+      return RaisedButton(
+        child: Text('Disconnecct'),
+        onPressed: _disconnect,
+      );
+    }
+  }
+
+  void _disconnect() {
+    setState(() {
+      _channel.sink.close();
+      _channel = null;
     });
   }
 
@@ -67,10 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Flexible(
                   flex: 0,
-                  child: RaisedButton(
-                    child: Text('Connecct'),
-                    onPressed: _connect,
-                  ),
+                  child: _buildConnectButton(),
                 )
               ],
             ),
