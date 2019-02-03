@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 
+import 'ConnectWidget.dart';
+import 'ReceiveMessageWidget.dart';
+import 'SendMessageWidget.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -22,46 +26,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final _addressController = TextEditingController(text: 'ws://echo.websocket.org');
-  final _messageController = TextEditingController(text: 'Hello');
   IOWebSocketChannel _channel;
 
-  void _connect() {
-    var address = _addressController.text;
-    print("address = $address");
+  void _onConnected(IOWebSocketChannel channel) {
     setState(() {
-      _channel = IOWebSocketChannel.connect(address);
+      _channel = channel;
     });
   }
 
-  Widget _buildConnectButton() {
-    if (_channel == null) {
-      return RaisedButton(
-        child: Text('Connecct'),
-        onPressed: _connect,
-      );
-    } else {
-      return RaisedButton(
-        child: Text('Disconnecct'),
-        onPressed: _disconnect,
-      );
-    }
-  }
-
-  void _disconnect() {
+  void _onDisconnected() {
     setState(() {
-      _channel.sink.close();
       _channel = null;
     });
-  }
-
-  void _send() {
-    if (_channel == null) {
-      return;
-    }
-    var message = _messageController.text;
-    print("message = $message");
-    _channel.sink.add(message);
   }
 
   @override
@@ -74,58 +50,21 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                Flexible(
-                  flex: 1,
-                  child: TextField(
-                    style: Theme.of(context).textTheme.body1,
-                    decoration: InputDecoration(
-                      labelText: 'Address',
-                    ),
-                    controller: _addressController,
-                  ),
-                ),
-                Flexible(
-                  flex: 0,
-                  child: _buildConnectButton(),
-                )
-              ],
+            ConnectWidget(
+              onConnected: _onConnected,
+              onDisconnected: _onDisconnected,
             ),
-            Row(
-              children: <Widget>[
-                Flexible(
-                  child: TextField(
-                    style: Theme.of(context).textTheme.body1,
-                    decoration: InputDecoration(
-                      labelText: 'Message',
-                    ),
-                    controller: _messageController,
-                  ),
-                ),
-                Flexible(
-                  flex: 0,
-                  child: RaisedButton(
-                    child: Text('Send'),
-                    onPressed: _send,
-                  ),
-                )
-              ],
+            SendMessageWidget(
+              channel: _channel,
             ),
-            _channel != null ? Padding(
-              padding: EdgeInsets.only(top: 16.0),
-              child:  StreamBuilder(
-                stream: _channel.stream,
-                builder: (context, snapshot) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 24.0),
-                    child: Text(snapshot.hasData ? '${snapshot.data}' : ''),
-                  );
-                },
-              )
-            ) : Container(),
+            Padding(
+              padding: EdgeInsets.only(top: 32.0),
+              child: ReceiveMessageWidget(
+                channel: _channel,
+              ),
+            ),
           ],
-        ),
+        )
       ),
     );
   }
