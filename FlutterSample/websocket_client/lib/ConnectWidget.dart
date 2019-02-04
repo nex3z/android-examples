@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:function_types/function_types.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/status.dart' as status;
 
+typedef void OnConnectedListener(IOWebSocketChannel channel);
+typedef void OnDisconnectedListener();
+
 class ConnectWidget extends StatefulWidget {
-  final Func1<IOWebSocketChannel, void> onConnected;
-  final Func0<void> onDisconnected;
+  final OnConnectedListener onConnected;
+  final OnDisconnectedListener onDisconnected;
 
   ConnectWidget({Key key, this.onConnected, this.onDisconnected}) : super(key: key);
 
