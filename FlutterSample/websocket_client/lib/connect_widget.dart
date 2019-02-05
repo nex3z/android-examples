@@ -67,7 +67,7 @@ class _ConnectWidgetState extends State<ConnectWidget> {
         Flexible(
           flex: 0,
           child: _buildConnectButton(),
-        )
+        ),
       ],
     );
   }

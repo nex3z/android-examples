@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 
-import 'ConnectWidget.dart';
-import 'ReceiveMessageWidget.dart';
-import 'SendMessageWidget.dart';
+import 'connect_widget.dart';
+import 'receive_message_widget.dart';
+import 'send_message_widget.dart';
 
 void main() => runApp(MyApp());
 
@@ -64,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           ],
-        )
+        ),
       ),
     );
   }
